@@ -4,9 +4,9 @@ import quantum.complex.Complex
 
 sealed class QuantumState
 
-class QubitZero : QuantumState()
+object QubitZero : QuantumState()
 
-class QubitOne : QuantumState()
+object QubitOne : QuantumState()
 
 data class Qubit(val zero: Complex, val one: Complex) : QuantumState()
 

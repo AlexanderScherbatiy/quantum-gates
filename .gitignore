@@ -4,6 +4,7 @@
 # Ignore Gradle build output directory
 build
 gradle/
+out/
 
 # Compiled class file
 *.class
