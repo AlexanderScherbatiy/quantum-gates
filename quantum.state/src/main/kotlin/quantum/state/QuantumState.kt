@@ -10,5 +10,7 @@ object QubitOne : QuantumState()
 
 data class Qubit(val zero: Complex, val one: Complex) : QuantumState()
 
+data class VariableState(val size: Int) : QuantumState()
+
 
 

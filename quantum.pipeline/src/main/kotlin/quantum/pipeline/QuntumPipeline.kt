@@ -3,26 +3,24 @@ package quantum.pipeline
 import quantum.state.QuantumGate
 import quantum.state.QuantumState
 
-enum class BlockType {
-    GATE
-}
-
 interface QuantumBlock
+
+interface ValueQuantumBlock
+
+data class StateBlock(val state: QuantumState) : QuantumBlock
 
 data class GateBlock(val gate: QuantumGate) : QuantumBlock
 
-data class BlockItem(val type: BlockType, val block: QuantumBlock)
-
 interface QuantumPipeline {
-    fun blockItems(): List<BlockItem>
-    fun compute(state: QuantumState)
+    fun blocks(): List<QuantumBlock>
+    fun compile(values: List<ValueQuantumBlock>)
 }
 
-class BaseQuantumPipeline(val blockItems: List<BlockItem>) : QuantumPipeline {
+class BaseQuantumPipeline(val blocks: List<QuantumBlock>) : QuantumPipeline {
 
-    override fun blockItems() = blockItems
+    override fun blocks() = blocks
 
-    override fun compute(state: QuantumState) {
+    override fun compile(values: List<ValueQuantumBlock>) {
         TODO("not implemented")
     }
 }

@@ -9,16 +9,16 @@ class QuantumPipelineBuilder {
     (state, gate) -> state
      */
 
-    private var blockItems = mutableListOf<BlockItem>()
+    private var blocks = mutableListOf<QuantumBlock>()
 
     fun begin() = StateBuilder()
 
     inner class StateBuilder {
         fun gate(gate: QuantumGate): StateBuilder {
-            blockItems.add(BlockItem(BlockType.GATE, GateBlock(gate)))
+            blocks.add(GateBlock(gate))
             return StateBuilder()
         }
 
-        fun end(): QuantumPipeline = BaseQuantumPipeline(blockItems)
+        fun end(): QuantumPipeline = BaseQuantumPipeline(blocks)
     }
 }

@@ -1,7 +1,6 @@
 package quantum.pipeline.builder
 
 import org.junit.Test
-import quantum.pipeline.BlockType
 import quantum.pipeline.GateBlock
 import quantum.pipeline.QuantumPipelineBuilder
 import quantum.state.IdentityGate
@@ -19,16 +18,13 @@ class QuantumPipelineBuilderTest {
                 .end()
 
 
-        val blockItems = pipeline.blockItems()
-        assertEquals(1, blockItems.size)
+        val blocks = pipeline.blocks()
+        assertEquals(1, blocks.size)
 
-        val blockItem = blockItems[0]
-        assertEquals(BlockType.GATE, blockItem.type)
+        val gateBlock = blocks[0]
+        assertTrue(gateBlock is GateBlock)
 
-        val block = blockItem.block as GateBlock
-        assertTrue(block is GateBlock)
-
-        val gate = block.gate
+        val gate = gateBlock.gate
         assertTrue(gate is IdentityGate)
         assertEquals(2, gate.size)
     }
