@@ -29,7 +29,7 @@ class QuantumPipelineBuilderTest {
         assertTrue(stateBlock is StateBlock)
 
         val state = stateBlock.state
-        assertTrue(state is QubitZero)
+        assertEquals(QubitZero, state)
 
         // gate
         val gateBlock = blocks[1]
