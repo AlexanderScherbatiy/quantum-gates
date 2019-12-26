@@ -6,10 +6,10 @@ import quantum.state.IdentityGate
 import quantum.state.QubitZero
 import kotlin.test.assertEquals
 
-class QuantumPipelineBuilderTest {
+class QuantumPipelineGateTest {
 
     @Test
-    fun testBuilder() {
+    fun testGate() {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
