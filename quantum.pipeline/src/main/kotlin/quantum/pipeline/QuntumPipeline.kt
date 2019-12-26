@@ -1,9 +1,6 @@
 package quantum.pipeline
 
-import quantum.state.QuantumGate
-import quantum.state.QuantumState
-import quantum.state.VariableGate
-import quantum.state.VariableState
+import quantum.state.*
 import java.lang.RuntimeException
 
 interface QuantumPipeline {
@@ -28,18 +25,20 @@ class BaseQuantumPipeline(override val state: QuantumState,
         val statesMap = stateValues.map { it.first to it.second }.toMap()
         val gatesMap = gateValues.map { it.first to it.second }.toMap()
 
-        val assembledState = when (state) {
-            is VariableState -> statesMap.getOrElse(state.name) {
-                throw RuntimeException("State value '${state.name}' is not provided.")
-            }
-            else -> state
+        fun valueNameError(description: String, name: String): Nothing =
+                throw RuntimeException("$description value '$name' is not provided.")
+
+        fun assembleState(s: QuantumState): QuantumState = when (s) {
+            is VariableState -> statesMap.getOrElse(s.name) { valueNameError("State", s.name) }
+            is TensorState -> TensorState(assembleState(s.state1), assembleState(s.state2))
+            else -> s
         }
+
+        val assembledState = assembleState(state)
 
         val assembledGates = gates.map { gate ->
             when (gate) {
-                is VariableGate -> gatesMap.getOrElse(gate.name) {
-                    throw RuntimeException("Gate value '${gate.name}' is not provided.")
-                }
+                is VariableGate -> gatesMap.getOrElse(gate.name) { valueNameError("Gate", gate.name) }
                 else -> gate
             }
         }
