@@ -2,15 +2,12 @@ package quantum.state
 
 import quantum.complex.Complex
 
-sealed class QuantumState
+interface QuantumState
 
-object QubitZero : QuantumState()
+object QubitZero : QuantumState
 
-object QubitOne : QuantumState()
+object QubitOne : QuantumState
 
-data class Qubit(val zero: Complex, val one: Complex) : QuantumState()
+data class Qubit(val zero: Complex, val one: Complex) : QuantumState
 
-data class VariableState(val name: String, val size: Int) : QuantumState()
-
-
-
+data class VariableState(val name: String, val size: Int) : QuantumState

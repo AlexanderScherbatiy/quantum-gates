@@ -20,38 +20,30 @@ class AssemblyQuantumPipelineTest {
                 .end()
 
 
-        val blocks = pipeline.blocks()
-        assertEquals(2, blocks.size)
-
         // state
-        val stateBlock = blocks[0]
-        assertTrue(stateBlock is StateBlock)
-
-        val state = stateBlock.state
+        val state = pipeline.state
         assertTrue(state is VariableState)
         assertEquals("input", state.name)
         assertEquals(2, state.size)
 
-        // gate
-        val gateBlock = blocks[1]
-        assertTrue(gateBlock is GateBlock)
-
-        val gate = gateBlock.gate
+        // gates
+        assertEquals(1, pipeline.gates.size)
+        val gate = pipeline.gates[0]
         assertTrue(gate is IdentityGate)
         assertEquals(2, gate.size)
 
         // assembled pipeline
-        val values = listOf(ValueStateBlock("input", QubitZero))
-        val assembledPipeline = pipeline.assembly(values)
+        val stateValues = listOf(Pair("input", QubitZero))
+        val assembledPipeline = pipeline.assembly(stateValues, listOf())
 
-        val assembledBlocks = assembledPipeline.blocks()
-        assertEquals(2, assembledBlocks.size)
-
-        // state
-        val assembledStateBlock = assembledBlocks[0]
-        assertTrue(assembledStateBlock is StateBlock)
-
-        val assembledState = assembledStateBlock.state
+        // assembled state
+        val assembledState = assembledPipeline.state
         assertEquals(QubitZero, assembledState)
+
+        // assembled gates
+        assertEquals(1, assembledPipeline.gates.size)
+        val assembledGate = assembledPipeline.gates[0]
+        assertTrue(assembledGate is IdentityGate)
+        assertEquals(2, assembledGate.size)
     }
 }

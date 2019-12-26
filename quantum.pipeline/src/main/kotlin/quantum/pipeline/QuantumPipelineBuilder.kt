@@ -10,23 +10,24 @@ class QuantumPipelineBuilder {
     (state, gate) -> state
      */
 
-    private var blocks = mutableListOf<QuantumBlock>()
+    private lateinit var state: QuantumState
+    private val gates = mutableListOf<QuantumGate>()
 
     fun begin() = StateBuilder()
 
     inner class StateBuilder {
         fun state(state: QuantumState): GateBuilder {
-            blocks.add(StateBlock(state))
+            this@QuantumPipelineBuilder.state = state
             return GateBuilder()
         }
     }
 
     inner class GateBuilder {
         fun gate(gate: QuantumGate): GateBuilder {
-            blocks.add(GateBlock(gate))
+            this@QuantumPipelineBuilder.gates.add(gate)
             return GateBuilder()
         }
 
-        fun end(): QuantumPipeline = BaseQuantumPipeline(blocks)
+        fun end(): QuantumPipeline = BaseQuantumPipeline(state, gates)
     }
 }
