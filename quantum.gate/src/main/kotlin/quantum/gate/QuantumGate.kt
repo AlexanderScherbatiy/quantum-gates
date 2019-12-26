@@ -1,5 +1,7 @@
 package quantum.state
 
-sealed class QuantumGate
+interface QuantumGate
 
-data class IdentityGate(val size: Int) : QuantumGate()
+data class IdentityGate(val size: Int) : QuantumGate
+
+data class VariableGate(val name: String, val size: Int) : QuantumGate

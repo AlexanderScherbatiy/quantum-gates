@@ -2,14 +2,15 @@ package quantum.pipeline
 
 import quantum.state.QuantumGate
 import quantum.state.QuantumState
+import quantum.state.VariableGate
 import quantum.state.VariableState
 import java.lang.RuntimeException
 
 interface QuantumPipeline {
     val state: QuantumState
     val gates: List<QuantumGate>
-    fun assembly(states: List<Pair<String, QuantumState>>,
-                 gates: List<Pair<String, QuantumGate>>): AssembledQuantumPipeline
+    fun assembly(stateValues: List<Pair<String, QuantumState>>,
+                 gateValues: List<Pair<String, QuantumGate>>): AssembledQuantumPipeline
 }
 
 interface AssembledQuantumPipeline {
@@ -25,6 +26,7 @@ class BaseQuantumPipeline(override val state: QuantumState,
                           gateValues: List<Pair<String, QuantumGate>>): AssembledQuantumPipeline {
 
         val statesMap = stateValues.map { it.first to it.second }.toMap()
+        val gatesMap = gateValues.map { it.first to it.second }.toMap()
 
         val assembledState = when (state) {
             is VariableState -> statesMap.getOrElse(state.name) {
@@ -33,7 +35,16 @@ class BaseQuantumPipeline(override val state: QuantumState,
             else -> state
         }
 
-        return AssembledBaseQuantumPipeline(assembledState, gates)
+        val assembledGates = gates.map { gate ->
+            when (gate) {
+                is VariableGate -> gatesMap.getOrElse(gate.name) {
+                    throw RuntimeException("Gate value '${gate.name}' is not provided.")
+                }
+                else -> gate
+            }
+        }
+
+        return AssembledBaseQuantumPipeline(assembledState, assembledGates)
     }
 }
 

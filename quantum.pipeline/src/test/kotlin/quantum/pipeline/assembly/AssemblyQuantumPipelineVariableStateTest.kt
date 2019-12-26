@@ -1,14 +1,12 @@
 package quantum.pipeline.assembly
 
 import org.junit.Test
-import quantum.pipeline.*
-import quantum.state.IdentityGate
+import quantum.pipeline.QuantumPipelineBuilder
 import quantum.state.QubitZero
 import quantum.state.VariableState
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
-class AssemblyQuantumPipelineTest {
+class AssemblyQuantumPipelineVariableStateTest {
 
     @Test
     fun testVariableState() {
@@ -16,21 +14,15 @@ class AssemblyQuantumPipelineTest {
         val pipeline = QuantumPipelineBuilder()
                 .begin()
                 .state(VariableState("input", 2))
-                .gate(IdentityGate(2))
                 .end()
 
 
         // state
         val state = pipeline.state
-        assertTrue(state is VariableState)
-        assertEquals("input", state.name)
-        assertEquals(2, state.size)
+        assertEquals(VariableState("input", 2), state)
 
         // gates
-        assertEquals(1, pipeline.gates.size)
-        val gate = pipeline.gates[0]
-        assertTrue(gate is IdentityGate)
-        assertEquals(2, gate.size)
+        assertEquals(0, pipeline.gates.size)
 
         // assembled pipeline
         val stateValues = listOf(Pair("input", QubitZero))
@@ -41,9 +33,6 @@ class AssemblyQuantumPipelineTest {
         assertEquals(QubitZero, assembledState)
 
         // assembled gates
-        assertEquals(1, assembledPipeline.gates.size)
-        val assembledGate = assembledPipeline.gates[0]
-        assertTrue(assembledGate is IdentityGate)
-        assertEquals(2, assembledGate.size)
+        assertEquals(0, assembledPipeline.gates.size)
     }
 }
