@@ -57,7 +57,7 @@ class BaseAssembledQuantumPipeline(override val state: QuantumState,
     override fun evaluate(): EvaluatedQuantumPipeline {
         var output = state
         for (gate in gates) {
-            output = apply(gate, output)
+            output = multiply(gate, output)
         }
         return BaseEvaluatedQuantumPipeline(output)
     }
@@ -65,8 +65,16 @@ class BaseAssembledQuantumPipeline(override val state: QuantumState,
 
 data class BaseEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
 
-fun apply(gate: QuantumGate, state: QuantumState): QuantumState =
+fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
         when (gate) {
             is IdentityGate -> state
+            is HadamardGate -> when(state) {
+                is QubitZero -> QubitPlus
+                is QubitOne -> QubitMinus
+                is QubitPlus -> QubitZero
+                is QubitMinus -> QubitOne
+                else -> throw RuntimeException(
+                        "Unknown multiplication Hadamard gate on state: $state")
+            }
             else -> throw RuntimeException("Unknown gate: $gate")
         }
