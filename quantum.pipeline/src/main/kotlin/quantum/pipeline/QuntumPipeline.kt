@@ -13,7 +13,11 @@ interface QuantumPipeline {
 interface AssembledQuantumPipeline {
     val state: QuantumState
     val gates: List<QuantumGate>
-    fun run(): QuantumState
+    fun evaluate(): EvaluatedQuantumPipeline
+}
+
+interface EvaluatedQuantumPipeline {
+    val output: QuantumState
 }
 
 class BaseQuantumPipeline(override val state: QuantumState,
@@ -43,14 +47,26 @@ class BaseQuantumPipeline(override val state: QuantumState,
             }
         }
 
-        return AssembledBaseQuantumPipeline(assembledState, assembledGates)
+        return BaseAssembledQuantumPipeline(assembledState, assembledGates)
     }
 }
 
-class AssembledBaseQuantumPipeline(override val state: QuantumState,
+class BaseAssembledQuantumPipeline(override val state: QuantumState,
                                    override val gates: List<QuantumGate>) : AssembledQuantumPipeline {
 
-    override fun run(): QuantumState {
-        TODO("not implemented")
+    override fun evaluate(): EvaluatedQuantumPipeline {
+        var output = state
+        for (gate in gates) {
+            output = apply(gate, output)
+        }
+        return BaseEvaluatedQuantumPipeline(output)
     }
 }
+
+data class BaseEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
+
+fun apply(gate: QuantumGate, state: QuantumState): QuantumState =
+        when (gate) {
+            is IdentityGate -> state
+            else -> throw RuntimeException("Unknown gate: $gate")
+        }
