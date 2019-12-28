@@ -3,7 +3,7 @@ package quantum.pipeline.builder
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
 import quantum.state.IdentityGate
-import quantum.state.QubitZero
+import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 
 class QuantumPipelineGateTest {
@@ -13,13 +13,13 @@ class QuantumPipelineGateTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitZero)
+                .state(ZeroQubit)
                 .gate(IdentityGate(2))
                 .end()
 
         // state
         val state = pipeline.state
-        assertEquals(QubitZero, state)
+        assertEquals(ZeroQubit, state)
 
         // gates
         assertEquals(1, pipeline.gates.size)

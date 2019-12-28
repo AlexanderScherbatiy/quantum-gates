@@ -8,25 +8,25 @@ interface QuantumState
  * Zero qubit:
  * |0>
  */
-object QubitZero : QuantumState
+object ZeroQubit : QuantumState
 
 /**
  * One qubit:
  * |1>
  */
-object QubitOne : QuantumState
+object OneQubit : QuantumState
 
 /**
  * Plus qubit:
  * (|0> + |1>)/sqrt(2)
  */
-object QubitPlus : QuantumState
+object PlusQubit : QuantumState
 
 /**
  * Minus qubit:
  * (|0> - |1>)/sqrt(2)
  */
-object QubitMinus : QuantumState
+object MinusQubit : QuantumState
 
 /**
  * Qubit:

@@ -12,12 +12,12 @@ class QuantumPipelineTensorStateTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitZero tensor QubitOne)
+                .state(ZeroQubit tensor OneQubit)
                 .end()
 
         // state
         val state = pipeline.state
-        assertEquals(TensorState(QubitZero, QubitOne), state)
+        assertEquals(TensorState(ZeroQubit, OneQubit), state)
 
         // gates
         assertEquals(0, pipeline.gates.size)

@@ -10,9 +10,9 @@ class HadamardGateMultiplyTest {
     @Test
     fun multiplyTest() {
 
-        assertEquals(QubitPlus, multiply(HadamardGate, QubitZero))
-        assertEquals(QubitMinus, multiply(HadamardGate, QubitOne))
-        assertEquals(QubitZero, multiply(HadamardGate, QubitPlus))
-        assertEquals(QubitOne, multiply(HadamardGate, QubitMinus))
+        assertEquals(PlusQubit, multiply(HadamardGate, ZeroQubit))
+        assertEquals(MinusQubit, multiply(HadamardGate, OneQubit))
+        assertEquals(ZeroQubit, multiply(HadamardGate, PlusQubit))
+        assertEquals(OneQubit, multiply(HadamardGate, MinusQubit))
     }
 }

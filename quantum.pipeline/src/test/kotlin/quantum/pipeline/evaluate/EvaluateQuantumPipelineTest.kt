@@ -3,8 +3,8 @@ package quantum.pipeline.evaluate
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
 import quantum.state.IdentityGate
-import quantum.state.QubitOne
-import quantum.state.QubitZero
+import quantum.state.OneQubit
+import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 
 class EvaluateQuantumPipelineTest {
@@ -14,13 +14,13 @@ class EvaluateQuantumPipelineTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitZero)
+                .state(ZeroQubit)
                 .end()
 
         val assembledPipeline = pipeline.assembly(listOf(), listOf())
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
-        assertEquals(QubitZero, output)
+        assertEquals(ZeroQubit, output)
     }
 
     @Test
@@ -28,13 +28,13 @@ class EvaluateQuantumPipelineTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitOne)
+                .state(OneQubit)
                 .end()
 
         val assembledPipeline = pipeline.assembly(listOf(), listOf())
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
-        assertEquals(QubitOne, output)
+        assertEquals(OneQubit, output)
     }
 
     @Test
@@ -42,14 +42,14 @@ class EvaluateQuantumPipelineTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitZero)
+                .state(ZeroQubit)
                 .gate(IdentityGate(2))
                 .end()
 
         val assembledPipeline = pipeline.assembly(listOf(), listOf())
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
-        assertEquals(QubitZero, output)
+        assertEquals(ZeroQubit, output)
     }
 
     @Test
@@ -57,13 +57,13 @@ class EvaluateQuantumPipelineTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(QubitOne)
+                .state(OneQubit)
                 .gate(IdentityGate(2))
                 .end()
 
         val assembledPipeline = pipeline.assembly(listOf(), listOf())
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
-        assertEquals(QubitOne, output)
+        assertEquals(OneQubit, output)
     }
 }

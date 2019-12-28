@@ -2,7 +2,7 @@ package quantum.pipeline.assembly
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.state.QubitZero
+import quantum.state.ZeroQubit
 import quantum.state.VariableState
 import kotlin.test.assertEquals
 
@@ -25,12 +25,12 @@ class AssemblyQuantumPipelineVariableStateTest {
         assertEquals(0, pipeline.gates.size)
 
         // assembled pipeline
-        val stateValues = listOf(Pair("input", QubitZero))
+        val stateValues = listOf(Pair("input", ZeroQubit))
         val assembledPipeline = pipeline.assembly(stateValues, listOf())
 
         // assembled state
         val assembledState = assembledPipeline.state
-        assertEquals(QubitZero, assembledState)
+        assertEquals(ZeroQubit, assembledState)
 
         // assembled gates
         assertEquals(0, assembledPipeline.gates.size)

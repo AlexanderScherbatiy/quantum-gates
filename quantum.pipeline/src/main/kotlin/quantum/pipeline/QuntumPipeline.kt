@@ -69,10 +69,10 @@ fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
         when (gate) {
             is IdentityGate -> state
             is HadamardGate -> when(state) {
-                is QubitZero -> QubitPlus
-                is QubitOne -> QubitMinus
-                is QubitPlus -> QubitZero
-                is QubitMinus -> QubitOne
+                is ZeroQubit -> PlusQubit
+                is OneQubit -> MinusQubit
+                is PlusQubit -> ZeroQubit
+                is MinusQubit -> OneQubit
                 else -> throw RuntimeException(
                         "Unknown multiplication Hadamard gate on state: $state")
             }
