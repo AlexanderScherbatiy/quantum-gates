@@ -1,23 +1,23 @@
-package quantum.pipeline.builder
+package quantum.pipeline.base.builder
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.state.OneQubit
+import quantum.state.*
 import kotlin.test.assertEquals
 
-class QuantumPipelineStateTest {
+class QuantumPipelineTensorStateTest {
 
     @Test
-    fun testState() {
+    fun testTensorState() {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(OneQubit)
+                .state(ZeroQubit tensor OneQubit)
                 .end()
 
         // state
         val state = pipeline.state
-        assertEquals(OneQubit, state)
+        assertEquals(TensorState(ZeroQubit, OneQubit), state)
 
         // gates
         assertEquals(0, pipeline.gates.size)

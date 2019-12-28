@@ -1,7 +1,7 @@
-package quantum.pipeline.multiply
+package quantum.pipeline.base.multiply
 
 import org.junit.Test
-import quantum.pipeline.multiply
+import quantum.pipeline.base.multiply
 import quantum.state.*
 import kotlin.test.assertEquals
 

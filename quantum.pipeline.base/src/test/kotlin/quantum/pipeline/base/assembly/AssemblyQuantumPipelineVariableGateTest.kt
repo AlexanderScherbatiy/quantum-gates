@@ -1,4 +1,4 @@
-package quantum.pipeline.assembly
+package quantum.pipeline.base.assembly
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
@@ -27,7 +27,7 @@ class AssemblyQuantumPipelineVariableGateTest {
         val gate = pipeline.gates[0]
         assertEquals(VariableGate("gate", 2), gate)
 
-        // assembled pipeline
+        // assembled quantum.pipeline
         val gateValues = listOf(Pair("gate", IdentityGate(2)))
         val assembledPipeline = pipeline.assembly(listOf(), gateValues)
 

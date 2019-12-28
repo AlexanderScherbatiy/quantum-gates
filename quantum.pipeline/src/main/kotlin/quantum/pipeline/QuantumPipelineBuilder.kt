@@ -2,16 +2,24 @@ package quantum.pipeline
 
 import quantum.state.QuantumGate
 import quantum.state.QuantumState
+import java.lang.RuntimeException
+import java.util.*
 
 class QuantumPipelineBuilder {
 
-    /*
-    Finite state machine
-    (state, gate) -> state
-     */
-
+    private var factory: QuantumPipelineFactory
     private lateinit var state: QuantumState
     private val gates = mutableListOf<QuantumGate>()
+
+    init {
+        val loader = ServiceLoader.load(QuantumPipelineFactory::class.java)
+        val factories = loader.iterator()
+        if (factories.hasNext()) {
+            factory = factories.next()
+        } else {
+            throw RuntimeException("QuantumPipelineFactory is not provided.")
+        }
+    }
 
     fun begin() = StateBuilder()
 
@@ -28,6 +36,6 @@ class QuantumPipelineBuilder {
             return GateBuilder()
         }
 
-        fun end(): QuantumPipeline = BaseQuantumPipeline(state, gates)
+        fun end(): QuantumPipeline = factory.getPipeline(state, gates)
     }
 }

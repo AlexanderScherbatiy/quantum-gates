@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':quantum.complex')
+    compile project(':quantum.state')
+    compile project(':quantum.gate')
+    compile project(':quantum.pipeline')
+}
+

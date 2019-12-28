@@ -1,4 +1,4 @@
-package quantum.pipeline.assembly
+package quantum.pipeline.base.assembly
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
@@ -24,7 +24,7 @@ class AssemblyQuantumPipelineVariableStateTest {
         // gates
         assertEquals(0, pipeline.gates.size)
 
-        // assembled pipeline
+        // assembled quantum.pipeline
         val stateValues = listOf(Pair("input", ZeroQubit))
         val assembledPipeline = pipeline.assembly(stateValues, listOf())
 

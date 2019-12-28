@@ -1,4 +1,4 @@
-package quantum.pipeline.builder
+package quantum.pipeline.base.builder
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder

@@ -1,4 +1,4 @@
-package quantum.pipeline.assembly
+package quantum.pipeline.base.assembly
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
@@ -26,7 +26,7 @@ class AssemblyQuantumPipelineVariableTensorStateTest {
         // gates
         assertEquals(0, pipeline.gates.size)
 
-        // assembled pipeline
+        // assembled quantum.pipeline
         val stateValues = listOf(Pair("state2", OneQubit))
         val assembledPipeline = pipeline.assembly(stateValues, listOf())
 
