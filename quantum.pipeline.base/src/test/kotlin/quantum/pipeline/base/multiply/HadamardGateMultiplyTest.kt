@@ -1,8 +1,12 @@
 package quantum.pipeline.base.multiply
 
 import org.junit.Test
+import quantum.gate.HadamardGate
 import quantum.pipeline.base.multiply
-import quantum.state.*
+import quantum.state.MinusQubit
+import quantum.state.OneQubit
+import quantum.state.PlusQubit
+import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 
 class HadamardGateMultiplyTest {

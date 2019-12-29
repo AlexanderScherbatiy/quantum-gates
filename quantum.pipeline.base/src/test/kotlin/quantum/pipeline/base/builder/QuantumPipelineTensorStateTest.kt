@@ -2,7 +2,10 @@ package quantum.pipeline.base.builder
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.state.*
+import quantum.state.OneQubit
+import quantum.state.TensorState
+import quantum.state.ZeroQubit
+import quantum.state.tensor
 import kotlin.test.assertEquals
 
 class QuantumPipelineTensorStateTest {

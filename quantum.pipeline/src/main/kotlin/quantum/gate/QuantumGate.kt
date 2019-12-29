@@ -1,4 +1,4 @@
-package quantum.state
+package quantum.gate
 
 interface QuantumGate
 

@@ -5,6 +5,7 @@ import quantum.pipeline.EvaluatedQuantumPipeline
 import quantum.pipeline.QuantumPipeline
 import quantum.pipeline.QuantumPipelineFactory
 import quantum.state.*
+import quantum.gate.*
 import java.lang.RuntimeException
 
 class BaseQuantumPipelineFactory : QuantumPipelineFactory {

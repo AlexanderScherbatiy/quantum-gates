@@ -2,7 +2,7 @@ package quantum.pipeline.base.builder
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.state.IdentityGate
+import quantum.gate.IdentityGate
 import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 

@@ -1,6 +1,7 @@
 package quantum.pipeline
 
-import quantum.state.*
+import quantum.state.QuantumState
+import quantum.gate.QuantumGate
 
 interface QuantumPipeline {
     val state: QuantumState

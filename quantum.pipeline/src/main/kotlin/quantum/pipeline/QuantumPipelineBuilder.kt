@@ -1,6 +1,6 @@
 package quantum.pipeline
 
-import quantum.state.QuantumGate
+import quantum.gate.QuantumGate
 import quantum.state.QuantumState
 import java.lang.RuntimeException
 import java.util.*

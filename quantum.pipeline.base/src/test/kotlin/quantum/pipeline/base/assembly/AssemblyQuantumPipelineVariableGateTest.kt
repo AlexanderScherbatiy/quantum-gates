@@ -2,9 +2,9 @@ package quantum.pipeline.base.assembly
 
 import org.junit.Test
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.state.IdentityGate
+import quantum.gate.IdentityGate
+import quantum.gate.VariableGate
 import quantum.state.ZeroQubit
-import quantum.state.VariableGate
 import kotlin.test.assertEquals
 
 class AssemblyQuantumPipelineVariableGateTest {
