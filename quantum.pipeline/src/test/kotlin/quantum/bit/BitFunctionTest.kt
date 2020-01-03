@@ -9,7 +9,7 @@ class BitFunctionTest {
     @Test
     fun testBitFunction() {
         assertEquals(
-                BitFunction(listOf("x"), Not(VariableBit("x"))),
+                BitFunctionWithParameters(listOf("x"), Not(VariableBit("x"))),
                 function(listOf("x")) {
                     VariableBit("x").not()
                 }

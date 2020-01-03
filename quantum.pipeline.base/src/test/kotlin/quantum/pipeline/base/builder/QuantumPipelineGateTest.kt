@@ -1,15 +1,22 @@
 package quantum.pipeline.base.builder
 
 import org.junit.Test
+import quantum.bit.BitFunctionWithParameters
+import quantum.bit.ZeroBit
+import quantum.bit.function
+import quantum.gate.ControlledFunctionGate
 import quantum.pipeline.QuantumPipelineBuilder
 import quantum.gate.IdentityGate
+import quantum.state.OneQubit
+import quantum.state.TensorState
 import quantum.state.ZeroQubit
+import quantum.state.tensor
 import kotlin.test.assertEquals
 
 class QuantumPipelineGateTest {
 
     @Test
-    fun testGate() {
+    fun testIdentityGate() {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
@@ -26,5 +33,27 @@ class QuantumPipelineGateTest {
 
         val gate = pipeline.gates[0]
         assertEquals(IdentityGate(2), gate)
+    }
+
+    @Test
+    fun controlledFunctionGate() {
+
+        val pipeline = QuantumPipelineBuilder()
+                .begin()
+                .state(ZeroQubit tensor OneQubit)
+                .gate(ControlledFunctionGate(4, function(listOf("x")) { ZeroBit }))
+                .end()
+
+        // state
+        val state = pipeline.state
+        assertEquals(TensorState(ZeroQubit, OneQubit), state)
+
+        // gates
+        assertEquals(1, pipeline.gates.size)
+
+        val gate = pipeline.gates[0]
+        assertEquals(
+                ControlledFunctionGate(4, BitFunctionWithParameters(listOf("x"), ZeroBit)),
+                gate)
     }
 }

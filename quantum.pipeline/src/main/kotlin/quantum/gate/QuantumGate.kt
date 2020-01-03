@@ -1,5 +1,7 @@
 package quantum.gate
 
+import quantum.bit.BitFunction
+
 interface QuantumGate
 
 data class IdentityGate(val size: Int) : QuantumGate
@@ -16,6 +18,8 @@ data class IdentityGate(val size: Int) : QuantumGate
  * HadamardGate * MinusQubit = OneQubit
  */
 object HadamardGate : QuantumGate
+
+data class ControlledFunctionGate(val size: Int, val f: BitFunction) : QuantumGate
 
 data class VariableGate(val name: String, val size: Int) : QuantumGate
 
