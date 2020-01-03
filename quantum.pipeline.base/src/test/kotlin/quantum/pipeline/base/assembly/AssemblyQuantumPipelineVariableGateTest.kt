@@ -15,7 +15,7 @@ class AssemblyQuantumPipelineVariableGateTest {
         val pipeline = QuantumPipelineBuilder()
                 .begin()
                 .state(ZeroQubit)
-                .gate(VariableGate("gate", 2))
+                .gate(VariableGate(2, "gate"))
                 .end()
 
         // state
@@ -25,7 +25,7 @@ class AssemblyQuantumPipelineVariableGateTest {
         // gates
         assertEquals(1, pipeline.gates.size)
         val gate = pipeline.gates[0]
-        assertEquals(VariableGate("gate", 2), gate)
+        assertEquals(VariableGate(2, "gate" ), gate)
 
         // assembled quantum.pipeline
         val gateValues = listOf(Pair("gate", IdentityGate(2)))

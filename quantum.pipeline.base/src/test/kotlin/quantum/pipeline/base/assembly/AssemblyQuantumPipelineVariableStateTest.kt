@@ -13,13 +13,13 @@ class AssemblyQuantumPipelineVariableStateTest {
 
         val pipeline = QuantumPipelineBuilder()
                 .begin()
-                .state(VariableState("input", 2))
+                .state(VariableState(2, "input"))
                 .end()
 
 
         // state
         val state = pipeline.state
-        assertEquals(VariableState("input", 2), state)
+        assertEquals(VariableState(2, "input"), state)
 
         // gates
         assertEquals(0, pipeline.gates.size)

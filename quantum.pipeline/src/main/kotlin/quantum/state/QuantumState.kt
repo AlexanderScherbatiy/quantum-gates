@@ -34,7 +34,7 @@ object MinusQubit : QuantumState
  */
 data class Qubit(val zero: Complex, val one: Complex) : QuantumState
 
-data class VariableState(val name: String, val size: Int) : QuantumState
+data class VariableState(val size: Int, val name: String) : QuantumState
 
 data class TensorState(val state1: QuantumState, val state2: QuantumState) : QuantumState
 
