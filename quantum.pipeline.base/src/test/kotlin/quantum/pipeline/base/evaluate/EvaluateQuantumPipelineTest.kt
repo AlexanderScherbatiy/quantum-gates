@@ -17,7 +17,7 @@ class EvaluateQuantumPipelineTest {
                 .state(ZeroQubit)
                 .end()
 
-        val assembledPipeline = pipeline.assembly(listOf(), listOf())
+        val assembledPipeline = pipeline.assembly()
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
         assertEquals(ZeroQubit, output)
@@ -31,7 +31,7 @@ class EvaluateQuantumPipelineTest {
                 .state(OneQubit)
                 .end()
 
-        val assembledPipeline = pipeline.assembly(listOf(), listOf())
+        val assembledPipeline = pipeline.assembly()
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
         assertEquals(OneQubit, output)
@@ -46,7 +46,7 @@ class EvaluateQuantumPipelineTest {
                 .gate(IdentityGate(2))
                 .end()
 
-        val assembledPipeline = pipeline.assembly(listOf(), listOf())
+        val assembledPipeline = pipeline.assembly()
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
         assertEquals(ZeroQubit, output)
@@ -61,7 +61,7 @@ class EvaluateQuantumPipelineTest {
                 .gate(IdentityGate(2))
                 .end()
 
-        val assembledPipeline = pipeline.assembly(listOf(), listOf())
+        val assembledPipeline = pipeline.assembly()
         val evaluatedPipeline = assembledPipeline.evaluate()
         val output = evaluatedPipeline.output
         assertEquals(OneQubit, output)

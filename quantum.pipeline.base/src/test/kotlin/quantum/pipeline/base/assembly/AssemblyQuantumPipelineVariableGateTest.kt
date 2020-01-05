@@ -33,8 +33,8 @@ class AssemblyQuantumPipelineVariableGateTest {
         assertEquals(VariableGate(2, "gate"), gate)
 
         // assembled pipeline
-        val gateValues = listOf(Pair("gate", IdentityGate(2)))
-        val assembledPipeline = pipeline.assembly(listOf(), gateValues)
+        val gateValues = mapOf("gate" to IdentityGate(2))
+        val assembledPipeline = pipeline.assembly(gatesMap = gateValues)
 
         // assembled state
         val assembledState = assembledPipeline.state
@@ -68,8 +68,8 @@ class AssemblyQuantumPipelineVariableGateTest {
                 gate)
 
         // assembled pipeline
-        val bitValues = listOf(Pair("f", function(listOf("x")) { OneBit }))
-        val assembledPipeline = pipeline.assembly(listOf(), listOf(), bitValues)
+        val bitValues = mapOf("f" to function(listOf("x")) { OneBit })
+        val assembledPipeline = pipeline.assembly(bitFunctionsMap = bitValues)
 
         // assembled state
         val assembledState = assembledPipeline.state

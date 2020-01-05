@@ -25,8 +25,8 @@ class AssemblyQuantumPipelineVariableStateTest {
         assertEquals(0, pipeline.gates.size)
 
         // assembled quantum.pipeline
-        val stateValues = listOf(Pair("input", ZeroQubit))
-        val assembledPipeline = pipeline.assembly(stateValues, listOf())
+        val stateValues = mapOf("input" to ZeroQubit)
+        val assembledPipeline = pipeline.assembly(statesMap = stateValues)
 
         // assembled state
         val assembledState = assembledPipeline.state

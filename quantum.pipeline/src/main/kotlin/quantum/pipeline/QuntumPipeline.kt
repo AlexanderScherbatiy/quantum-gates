@@ -7,9 +7,9 @@ import quantum.gate.QuantumGate
 interface QuantumPipeline {
     val state: QuantumState
     val gates: List<QuantumGate>
-    fun assembly(stateValues: List<Pair<String, QuantumState>> = listOf(),
-                 gateValues: List<Pair<String, QuantumGate>> = listOf(),
-                 bitFunctions: List<Pair<String, BitFunctionWithParameters>> = listOf()
+    fun assembly(statesMap: Map<String, QuantumState> = mapOf(),
+                 gatesMap: Map<String, QuantumGate> = mapOf(),
+                 bitFunctionsMap: Map<String, BitFunctionWithParameters> = mapOf()
     ): AssembledQuantumPipeline
 }
 

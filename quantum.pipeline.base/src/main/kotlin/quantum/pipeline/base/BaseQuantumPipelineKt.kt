@@ -24,13 +24,9 @@ fun <T> blockValue(map: Map<String, T>, blockName: String, variableName: String)
 class BaseQuantumPipeline(override val state: QuantumState,
                           override val gates: List<QuantumGate>) : QuantumPipeline {
 
-    override fun assembly(stateValues: List<Pair<String, QuantumState>>,
-                          gateValues: List<Pair<String, QuantumGate>>,
-                          bitFunctions: List<Pair<String, BitFunctionWithParameters>>): AssembledQuantumPipeline {
-
-        val statesMap = stateValues.map { it.first to it.second }.toMap()
-        val gatesMap = gateValues.map { it.first to it.second }.toMap()
-        val bitFunctionsMap = bitFunctions.map { it.first to it.second }.toMap()
+    override fun assembly(statesMap: Map<String, QuantumState>,
+                          gatesMap: Map<String, QuantumGate>,
+                          bitFunctionsMap: Map<String, BitFunctionWithParameters>): AssembledQuantumPipeline {
 
         fun assembleState(s: QuantumState): QuantumState = when (s) {
             is VariableState -> blockValue(statesMap, "State", s.name)
