@@ -15,6 +15,12 @@ class BaseQuantumPipelineFactory : QuantumPipelineFactory {
     override fun getPipeline(state: QuantumState, gates: List<QuantumGate>) = BaseQuantumPipeline(state, gates)
 }
 
+
+fun <T> blockValue(map: Map<String, T>, blockName: String, variableName: String): T =
+        map.getOrElse(variableName) {
+            throw RuntimeException("$blockName value '$variableName' is not provided.")
+        }
+
 class BaseQuantumPipeline(override val state: QuantumState,
                           override val gates: List<QuantumGate>) : QuantumPipeline {
 
@@ -26,11 +32,8 @@ class BaseQuantumPipeline(override val state: QuantumState,
         val gatesMap = gateValues.map { it.first to it.second }.toMap()
         val bitFunctionsMap = bitFunctions.map { it.first to it.second }.toMap()
 
-        fun valueNameError(description: String, name: String): Nothing =
-                throw RuntimeException("$description value '$name' is not provided.")
-
         fun assembleState(s: QuantumState): QuantumState = when (s) {
-            is VariableState -> statesMap.getOrElse(s.name) { valueNameError("State", s.name) }
+            is VariableState -> blockValue(statesMap, "State", s.name)
             is TensorState -> TensorState(assembleState(s.state1), assembleState(s.state2))
             else -> s
         }
@@ -39,13 +42,13 @@ class BaseQuantumPipeline(override val state: QuantumState,
 
         val assembledGates = gates.map { gate ->
             when (gate) {
-                is VariableGate -> gatesMap.getOrElse(gate.name) { valueNameError("Gate", gate.name) }
+                is VariableGate -> blockValue(gatesMap, "Gate", gate.name)
                 is ControlledFunctionGate -> {
                     val f = gate.f
                     when (f) {
                         is VariableBitFunction -> ControlledFunctionGate(
                                 gate.size,
-                                bitFunctionsMap.getOrElse(f.name) { valueNameError("BitFunction", f.name) })
+                                blockValue(bitFunctionsMap, "BitFunction", f.name))
                         else -> gate
                     }
                 }
