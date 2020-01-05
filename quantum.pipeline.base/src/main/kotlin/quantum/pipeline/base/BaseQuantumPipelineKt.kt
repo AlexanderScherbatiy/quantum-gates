@@ -1,5 +1,7 @@
 package quantum.pipeline.base
 
+import quantum.bit.BitFunctionWithParameters
+import quantum.bit.VariableBitFunction
 import quantum.pipeline.AssembledQuantumPipeline
 import quantum.pipeline.EvaluatedQuantumPipeline
 import quantum.pipeline.QuantumPipeline
@@ -17,10 +19,12 @@ class BaseQuantumPipeline(override val state: QuantumState,
                           override val gates: List<QuantumGate>) : QuantumPipeline {
 
     override fun assembly(stateValues: List<Pair<String, QuantumState>>,
-                          gateValues: List<Pair<String, QuantumGate>>): AssembledQuantumPipeline {
+                          gateValues: List<Pair<String, QuantumGate>>,
+                          bitFunctions: List<Pair<String, BitFunctionWithParameters>>): AssembledQuantumPipeline {
 
         val statesMap = stateValues.map { it.first to it.second }.toMap()
         val gatesMap = gateValues.map { it.first to it.second }.toMap()
+        val bitFunctionsMap = bitFunctions.map { it.first to it.second }.toMap()
 
         fun valueNameError(description: String, name: String): Nothing =
                 throw RuntimeException("$description value '$name' is not provided.")
@@ -36,6 +40,15 @@ class BaseQuantumPipeline(override val state: QuantumState,
         val assembledGates = gates.map { gate ->
             when (gate) {
                 is VariableGate -> gatesMap.getOrElse(gate.name) { valueNameError("Gate", gate.name) }
+                is ControlledFunctionGate -> {
+                    val f = gate.f
+                    when (f) {
+                        is VariableBitFunction -> ControlledFunctionGate(
+                                gate.size,
+                                bitFunctionsMap.getOrElse(f.name) { valueNameError("BitFunction", f.name) })
+                        else -> gate
+                    }
+                }
                 else -> gate
             }
         }

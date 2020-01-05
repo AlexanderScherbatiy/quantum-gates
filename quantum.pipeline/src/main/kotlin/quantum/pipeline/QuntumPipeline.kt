@@ -1,13 +1,16 @@
 package quantum.pipeline
 
+import quantum.bit.BitFunctionWithParameters
 import quantum.state.QuantumState
 import quantum.gate.QuantumGate
 
 interface QuantumPipeline {
     val state: QuantumState
     val gates: List<QuantumGate>
-    fun assembly(stateValues: List<Pair<String, QuantumState>>,
-                 gateValues: List<Pair<String, QuantumGate>>): AssembledQuantumPipeline
+    fun assembly(stateValues: List<Pair<String, QuantumState>> = listOf(),
+                 gateValues: List<Pair<String, QuantumGate>> = listOf(),
+                 bitFunctions: List<Pair<String, BitFunctionWithParameters>> = listOf()
+    ): AssembledQuantumPipeline
 }
 
 interface AssembledQuantumPipeline {
