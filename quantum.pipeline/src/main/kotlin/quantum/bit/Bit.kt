@@ -14,6 +14,8 @@ data class And(val bit1: Bit, val bit2: Bit) : Bit
 
 data class Or(val bit1: Bit, val bit2: Bit) : Bit
 
+data class Xor(val bit1: Bit, val bit2: Bit) : Bit
+
 interface BitFunction : Bit
 
 data class BitFunctionWithParameters(val parameters: List<String>, val value: Bit) : BitFunction
