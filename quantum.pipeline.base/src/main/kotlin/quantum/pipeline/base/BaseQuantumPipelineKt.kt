@@ -90,6 +90,16 @@ fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
 
                 }
             }
+            is TensorGate -> {
+                when (state) {
+                    is TensorState -> {
+                        val out1 = multiply(gate.gate1, state.state1)
+                        val out2 = multiply(gate.gate2, state.state2)
+                        TensorState(out1, out2)
+                    }
+                    else -> throw RuntimeException("Unknown state: $state")
+                }
+            }
             else -> throw RuntimeException("Unknown gate: $gate")
         }
 
@@ -113,6 +123,7 @@ fun QuantumState.toArrayState() = when (this) {
                 else -> throw RuntimeException("Unknown state: $this")
             }
             is PlusQubit -> when (state2) {
+                is PlusQubit -> quantumState(listOf(0.5, 0.5, 0.5, 0.5))
                 is MinusQubit -> quantumState(listOf(0.5, -0.5, 0.5, -0.5))
                 else -> throw RuntimeException("Unknown state: $this")
             }
