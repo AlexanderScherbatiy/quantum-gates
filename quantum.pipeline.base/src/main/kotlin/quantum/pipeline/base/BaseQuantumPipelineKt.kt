@@ -176,12 +176,11 @@ fun QuantumState.controlledFunction(f: BitFunctionWithParameters): QuantumState 
         val y = bits[bitsSize - 1]
 
         val res = f.apply(x)
-        val out = Xor(res, y).apply(mapOf())
 
         // flip last index bit
-        val i = when (y) {
-            out -> stateIndex
-            ZeroBit -> stateIndex + 1
+        val i = when {
+            res == ZeroBit -> stateIndex
+            y == ZeroBit -> stateIndex + 1
             else -> stateIndex - 1
         }
 
