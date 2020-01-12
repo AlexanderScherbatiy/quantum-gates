@@ -28,5 +28,7 @@ infix fun Bit.and(bit: Bit): Bit = And(this, bit)
 
 infix fun Bit.or(bit: Bit): Bit = Or(this, bit)
 
+infix fun Bit.xor(bit: Bit): Bit = Xor(this, bit)
+
 fun function(parameters: List<String>, f: (List<String>) -> Bit): BitFunctionWithParameters =
         BitFunctionWithParameters(parameters, f(parameters))

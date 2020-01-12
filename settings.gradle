@@ -9,8 +9,6 @@
 
 rootProject.name = 'quantum-gates'
 
-include 'quantum.complex'
-include 'quantum.state'
-include 'quantum.gate'
 include 'quantum.pipeline'
+include 'quantum.pipeline.utils'
 include 'quantum.pipeline.base'
