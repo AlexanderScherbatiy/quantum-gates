@@ -3,11 +3,6 @@ package quantum.pipeline.utils
 import quantum.bit.*
 import java.lang.RuntimeException
 
-fun <T> blockValue(map: Map<String, T>, blockName: String, variableName: String): T =
-        map.getOrElse(variableName) {
-            throw RuntimeException("$blockName value '$variableName' is not provided.")
-        }
-
 fun BitFunctionWithParameters.apply(bits: List<Bit>): Bit {
 
     assert(parameters.size == bits.size)
@@ -24,7 +19,7 @@ fun BitFunctionWithParameters.apply(bits: List<Bit>): Bit {
 fun Bit.apply(map: Map<String, Bit>): Bit = when (this) {
 
     ZeroBit, OneBit -> this
-    is VariableBit -> blockValue(map, "Bit value", name)
+    is VariableBit -> blockValue( "Bit value", name, map)
     is Not -> {
         val r = bit.apply(map)
         if (r == ZeroBit) OneBit else ZeroBit

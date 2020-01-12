@@ -27,7 +27,7 @@ class BaseQuantumPipeline(override val state: QuantumState,
                           bitFunctionsMap: Map<String, BitFunctionWithParameters>): AssembledQuantumPipeline {
 
         fun assembleState(s: QuantumState): QuantumState = when (s) {
-            is VariableState -> blockValue(statesMap, "State", s.name)
+            is VariableState -> blockValue("State", s.name, statesMap)
             is TensorState -> TensorState(assembleState(s.state1), assembleState(s.state2))
             else -> s
         }
@@ -36,13 +36,13 @@ class BaseQuantumPipeline(override val state: QuantumState,
 
         val assembledGates = gates.map { gate ->
             when (gate) {
-                is VariableGate -> blockValue(gatesMap, "Gate", gate.name)
+                is VariableGate -> blockValue("Gate", gate.name, gatesMap)
                 is ControlledFunctionGate -> {
                     val f = gate.f
                     when (f) {
                         is VariableBitFunction -> ControlledFunctionGate(
                                 gate.size,
-                                blockValue(bitFunctionsMap, "BitFunction", f.name))
+                                blockValue("BitFunction", f.name, bitFunctionsMap))
                         else -> gate
                     }
                 }
