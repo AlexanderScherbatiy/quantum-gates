@@ -2,7 +2,7 @@ package quantum.pipeline.base.multiply
 
 import org.junit.Test
 import quantum.gate.HadamardGate
-import quantum.pipeline.base.multiply
+import quantum.pipeline.utils.multiply
 import quantum.state.MinusQubit
 import quantum.state.OneQubit
 import quantum.state.PlusQubit

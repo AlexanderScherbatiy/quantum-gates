@@ -7,7 +7,7 @@ import quantum.gate.HadamardGate
 import quantum.gate.tensor
 import quantum.pipeline.QuantumPipeline
 import quantum.pipeline.QuantumPipelineBuilder
-import quantum.pipeline.base.quantumState
+import quantum.pipeline.utils.toQuantumState
 import quantum.state.*
 import kotlin.test.assertEquals
 
@@ -58,7 +58,7 @@ class DeutschJozsaTaskTest {
             val evaluatedPipeline = assembledPipeline.evaluate()
             val output = evaluatedPipeline.output
 
-            assertEquals(quantumState(expected), output)
+            assertEquals(expected.toQuantumState(), output)
         }
     }
 }
