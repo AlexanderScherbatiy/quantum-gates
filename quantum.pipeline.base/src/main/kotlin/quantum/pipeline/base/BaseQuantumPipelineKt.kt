@@ -9,7 +9,9 @@ import quantum.pipeline.AssembledQuantumPipeline
 import quantum.pipeline.EvaluatedQuantumPipeline
 import quantum.pipeline.QuantumPipeline
 import quantum.pipeline.QuantumPipelineFactory
+import quantum.pipeline.utils.UnknownQuantumState
 import quantum.pipeline.utils.blockValue
+import quantum.pipeline.utils.memoryMultiply
 import quantum.pipeline.utils.multiply
 import quantum.state.QuantumState
 import quantum.state.TensorState
@@ -62,7 +64,7 @@ class BaseAssembledQuantumPipeline(override val state: QuantumState,
     override fun evaluate(): EvaluatedQuantumPipeline {
         var output = state
         for (gate in gates) {
-            output = multiply(gate, output)
+            output = baseMultiply(gate, output)
         }
         return BaseEvaluatedQuantumPipeline(output)
     }
@@ -70,5 +72,8 @@ class BaseAssembledQuantumPipeline(override val state: QuantumState,
 
 data class BaseEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
 
-
+private fun baseMultiply(gate: QuantumGate, state: QuantumState): QuantumState {
+    val res = multiply(gate, state)
+    return if (res == UnknownQuantumState) memoryMultiply(gate, state) else res
+}
 

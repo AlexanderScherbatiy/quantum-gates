@@ -11,6 +11,8 @@ interface QuantumPipeline {
                  gatesMap: Map<String, QuantumGate> = mapOf(),
                  bitFunctionsMap: Map<String, BitFunctionWithParameters> = mapOf()
     ): AssembledQuantumPipeline
+
+    fun evaluate(): EvaluatedQuantumPipeline = assembly().evaluate()
 }
 
 interface AssembledQuantumPipeline {

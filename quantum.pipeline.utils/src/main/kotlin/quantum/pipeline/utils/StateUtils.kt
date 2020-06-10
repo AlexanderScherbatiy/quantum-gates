@@ -8,6 +8,11 @@ import quantum.complex.Complex
 import quantum.complex.toComplex
 import quantum.state.*
 import java.lang.RuntimeException
+import kotlin.math.sqrt
+
+val inv_sqrt2 = 1.0 / sqrt(2.0)
+
+object UnknownQuantumState : QuantumState
 
 fun List<Double>.toQuantumState(): ArrayQuantumState =
         ArrayQuantumState(this.map { it.toComplex() }.toTypedArray())
@@ -29,6 +34,7 @@ fun QuantumState.toArrayState() = when (this) {
                 else -> throw RuntimeException("Unknown state: $this")
             }
             is PlusQubit -> when (state2) {
+                is ZeroQubit -> listOf(inv_sqrt2, 0.0, inv_sqrt2, 0.0).toQuantumState()
                 is PlusQubit -> listOf(0.5, 0.5, 0.5, 0.5).toQuantumState()
                 is MinusQubit -> listOf(0.5, -0.5, 0.5, -0.5).toQuantumState()
                 else -> throw RuntimeException("Unknown state: $this")

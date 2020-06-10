@@ -5,6 +5,10 @@ import quantum.gate.*
 import quantum.state.*
 import java.lang.RuntimeException
 
+/**
+ * Multiplies standard quantum gates and states.
+ * Rerturns UnknownQuantumState in case the result is not processed.
+ */
 fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
         when (gate) {
             is IdentityGate -> state
@@ -13,15 +17,14 @@ fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
                 is OneQubit -> MinusQubit
                 is PlusQubit -> ZeroQubit
                 is MinusQubit -> OneQubit
-                else -> throw RuntimeException(
-                        "Unknown multiplication Hadamard gate on state: $state")
+                else -> UnknownQuantumState
             }
+            is ControlledNotGate -> controlledNot(state)
             is ControlledFunctionGate -> {
                 val f = gate.f
                 when (f) {
                     is BitFunctionWithParameters -> state.controlledFunction(f)
-                    else -> throw RuntimeException("BitFunction must be with parameters")
-
+                    else -> UnknownQuantumState
                 }
             }
             is TensorGate -> {
@@ -31,9 +34,45 @@ fun multiply(gate: QuantumGate, state: QuantumState): QuantumState =
                         val out2 = multiply(gate.gate2, state.state2)
                         TensorState(out1, out2)
                     }
-                    else -> throw RuntimeException("Unknown state: $state")
+                    else -> UnknownQuantumState
                 }
             }
-            else -> throw RuntimeException("Unknown gate: $gate")
+            else -> UnknownQuantumState
         }
 
+fun swap(state: QuantumState): QuantumState = when (state) {
+    is ZeroQubit -> OneQubit
+    is OneQubit -> ZeroQubit
+    is Qubit -> Qubit(state.one, state.zero)
+    else -> UnknownQuantumState
+}
+
+
+fun controlledNot(state: QuantumState): QuantumState = when (state) {
+    is TensorState -> {
+        val contorl = state.state1
+        val target = state.state2
+        when {
+            contorl is ZeroQubit -> state
+            contorl is OneQubit -> TensorState(contorl, swap(target))
+            else -> UnknownQuantumState
+        }
+    }
+    else -> UnknownQuantumState
+}
+
+fun memoryMultiply(gate: QuantumGate, state: QuantumState): QuantumState = when (gate) {
+    is IdentityGate -> state
+    is ControlledNotGate -> memoryControlledNot(state)
+    else -> UnknownQuantumState
+}
+
+
+fun memoryControlledNot(state: QuantumState): QuantumState {
+    val values = state.toArrayState().values
+    val c0 = values[0]
+    val c1 = values[1]
+    val c2 = values[2]
+    val c3 = values[3]
+    return ArrayQuantumState(arrayOf(c0, c1, c3, c2))
+}

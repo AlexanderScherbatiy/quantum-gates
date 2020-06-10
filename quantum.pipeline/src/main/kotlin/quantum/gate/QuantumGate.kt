@@ -19,6 +19,8 @@ data class IdentityGate(val size: Int) : QuantumGate
  */
 object HadamardGate : QuantumGate
 
+object ControlledNotGate : QuantumGate
+
 data class ControlledFunctionGate(val size: Int, val f: BitFunction) : QuantumGate
 
 data class VariableGate(val size: Int, val name: String) : QuantumGate
