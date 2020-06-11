@@ -19,45 +19,38 @@ class QuantumPipelineGateTest {
     @Test
     fun testIdentityGate() {
         registeredFactories()
-                .forEach {
-
-                    val pipeline = QuantumPipelineBuilder()
+                .map {
+                    QuantumPipelineBuilder()
                             .factory(it)
                             .begin()
                             .state(ZeroQubit)
                             .gate(IdentityGate(2))
                             .end()
+                }
+                .forEach { pipeline ->
 
-                    // state
-                    val state = pipeline.state
-                    assertEquals(ZeroQubit, state)
-
-                    // gates
+                    assertEquals(ZeroQubit, pipeline.state)
                     assertEquals(1, pipeline.gates.size)
 
                     val gate = pipeline.gates[0]
                     assertEquals(IdentityGate(2), gate)
-
                 }
     }
 
     @Test
     fun controlledFunctionGate() {
         registeredFactories()
-                .forEach {
-
-                    val pipeline = QuantumPipelineBuilder()
+                .map {
+                    QuantumPipelineBuilder()
                             .factory(it)
                             .begin()
                             .state(ZeroQubit tensor OneQubit)
                             .gate(ControlledFunctionGate(4, function(listOf("x")) { ZeroBit }))
                             .end()
+                }
+                .forEach{ pipeline ->
 
-                    // state
-                    val state = pipeline.state
-                    assertEquals(TensorState(ZeroQubit, OneQubit), state)
-
-                    // gates
+                    assertEquals(TensorState(ZeroQubit, OneQubit), pipeline.state)
                     assertEquals(1, pipeline.gates.size)
 
                     val gate = pipeline.gates[0]

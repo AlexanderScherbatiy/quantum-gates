@@ -30,14 +30,14 @@ class QuantumPipelineStateTest {
 
     private fun testState(state: QuantumState) {
         registeredFactories()
-                .forEach {
-
-                    val pipeline = QuantumPipelineBuilder()
+                .map {
+                    QuantumPipelineBuilder()
                             .factory(it)
                             .begin()
                             .state(state)
                             .end()
-
+                }
+                .forEach { pipeline ->
                     assertEquals(state, pipeline.state)
                     assertEquals(0, pipeline.gates.size)
                 }

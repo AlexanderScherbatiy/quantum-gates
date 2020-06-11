@@ -14,19 +14,15 @@ class QuantumPipelineTensorStateTest {
     @Test
     fun testTensorState() {
         registeredFactories()
-                .forEach {
-
-                    val pipeline = QuantumPipelineBuilder()
+                .map {
+                    QuantumPipelineBuilder()
                             .factory(it)
                             .begin()
                             .state(ZeroQubit tensor OneQubit)
                             .end()
-
-                    // state
-                    val state = pipeline.state
-                    assertEquals(TensorState(ZeroQubit, OneQubit), state)
-
-                    // gates
+                }
+                .forEach { pipeline ->
+                    assertEquals(TensorState(ZeroQubit, OneQubit), pipeline.state)
                     assertEquals(0, pipeline.gates.size)
                 }
     }
