@@ -72,8 +72,7 @@ class BaseAssembledQuantumPipeline(override val state: QuantumState,
 
 data class BaseEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
 
-private fun baseMultiply(gate: QuantumGate, state: QuantumState): QuantumState {
+fun baseMultiply(gate: QuantumGate, state: QuantumState): QuantumState {
     val res = multiply(gate, state)
     return if (res == UnknownQuantumState) memoryMultiply(gate, state) else res
 }
-

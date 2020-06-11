@@ -1,4 +1,4 @@
-package quantum.pipeline.base.task
+package quantum.pipeline.test.task
 
 import org.junit.Test
 import quantum.bit.*
@@ -7,6 +7,7 @@ import quantum.gate.HadamardGate
 import quantum.gate.tensor
 import quantum.pipeline.QuantumPipeline
 import quantum.pipeline.QuantumPipelineBuilder
+import quantum.pipeline.test.utils.registeredFactories
 import quantum.pipeline.utils.toQuantumState
 import quantum.state.*
 import kotlin.test.assertEquals
@@ -15,28 +16,33 @@ class DeutschJozsaTaskTest {
 
     @Test
     fun deutschJozsaTask1() {
-
-        val pipeline = QuantumPipelineBuilder()
-                .begin()
-                .state(PlusQubit tensor MinusQubit)
-                .gate(ControlledFunctionGate(4, VariableBitFunction(1, "f")))
-                .end()
-
-
-        checkJozsaTask(pipeline)
+        registeredFactories()
+                .map {
+                    QuantumPipelineBuilder()
+                            .begin()
+                            .state(PlusQubit tensor MinusQubit)
+                            .gate(ControlledFunctionGate(4, VariableBitFunction(1, "f")))
+                            .end()
+                }
+                .forEach { pipeline ->
+                    checkJozsaTask(pipeline)
+                }
     }
 
     @Test
     fun deutschJozsaTask2() {
-
-        val pipeline = QuantumPipelineBuilder()
-                .begin()
-                .state(ZeroQubit tensor OneQubit)
-                .gate(HadamardGate tensor HadamardGate)
-                .gate(ControlledFunctionGate(4, VariableBitFunction(1, "f")))
-                .end()
-
-        checkJozsaTask(pipeline)
+        registeredFactories()
+                .map {
+                    QuantumPipelineBuilder()
+                            .begin()
+                            .state(ZeroQubit tensor OneQubit)
+                            .gate(HadamardGate tensor HadamardGate)
+                            .gate(ControlledFunctionGate(4, VariableBitFunction(1, "f")))
+                            .end()
+                }
+                .forEach { pipeline ->
+                    checkJozsaTask(pipeline)
+                }
     }
 
     fun checkJozsaTask(pipeline: QuantumPipeline) {

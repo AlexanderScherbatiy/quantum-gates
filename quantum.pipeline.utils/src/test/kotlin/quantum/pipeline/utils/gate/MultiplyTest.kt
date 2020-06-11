@@ -1,4 +1,4 @@
-package quantum.pipeline.base.multiply
+package quantum.pipeline.utils.gate
 
 import org.junit.Test
 import quantum.gate.HadamardGate
@@ -9,11 +9,10 @@ import quantum.state.PlusQubit
 import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 
-class HadamardGateMultiplyTest {
+class MultiplyTest {
 
     @Test
-    fun multiplyTest() {
-
+    fun multiplyHadamardGate() {
         assertEquals(PlusQubit, multiply(HadamardGate, ZeroQubit))
         assertEquals(MinusQubit, multiply(HadamardGate, OneQubit))
         assertEquals(ZeroQubit, multiply(HadamardGate, PlusQubit))
