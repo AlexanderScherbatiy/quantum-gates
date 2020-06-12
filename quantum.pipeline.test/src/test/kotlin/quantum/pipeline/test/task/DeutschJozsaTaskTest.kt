@@ -8,7 +8,7 @@ import quantum.gate.tensor
 import quantum.pipeline.QuantumPipeline
 import quantum.pipeline.QuantumPipelineBuilder
 import quantum.pipeline.test.utils.registeredFactories
-import quantum.pipeline.utils.toQuantumState
+import quantum.pipeline.utils.memory.toQuantumState
 import quantum.state.*
 import kotlin.test.assertEquals
 

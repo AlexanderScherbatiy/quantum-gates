@@ -1,4 +1,4 @@
-package quantum.pipeline.utils
+package quantum.pipeline.utils.memory
 
 import quantum.bit.Bit
 import quantum.bit.BitFunctionWithParameters
@@ -6,13 +6,12 @@ import quantum.bit.OneBit
 import quantum.bit.ZeroBit
 import quantum.complex.Complex
 import quantum.complex.toComplex
+import quantum.pipeline.utils.base.apply
 import quantum.state.*
 import java.lang.RuntimeException
 import kotlin.math.sqrt
 
 val inv_sqrt2 = 1.0 / sqrt(2.0)
-
-object UnknownQuantumState : QuantumState
 
 fun List<Double>.toQuantumState(): ArrayQuantumState =
         ArrayQuantumState(this.map { it.toComplex() }.toTypedArray())

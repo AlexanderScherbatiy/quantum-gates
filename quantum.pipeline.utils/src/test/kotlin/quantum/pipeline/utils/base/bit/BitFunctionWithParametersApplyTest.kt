@@ -1,8 +1,8 @@
-package quantum.pipeline.utils.bit
+package quantum.pipeline.utils.base.bit
 
 import org.junit.Test
 import quantum.bit.*
-import quantum.pipeline.utils.apply
+import quantum.pipeline.utils.base.apply
 import kotlin.test.assertEquals
 
 class BitFunctionWithParametersApplyTest {

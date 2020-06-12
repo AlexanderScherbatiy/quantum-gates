@@ -1,8 +1,8 @@
-package quantum.pipeline.utils.bit
+package quantum.pipeline.utils.base.bit
 
 import org.junit.Test
 import quantum.bit.*
-import quantum.pipeline.utils.apply
+import quantum.pipeline.utils.base.apply
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -10,6 +10,10 @@ class BitApplyTest {
 
     @Test
     fun test() {
+        assertEquals(ZeroBit, ZeroBit.apply())
+        assertEquals(OneBit, OneBit.apply())
+        assertNotEquals(OneBit, ZeroBit.apply())
+
         assertEquals(ZeroBit, ZeroBit.apply(mapOf()))
         assertEquals(OneBit, OneBit.apply(mapOf()))
         assertNotEquals(OneBit, ZeroBit.apply(mapOf()))
