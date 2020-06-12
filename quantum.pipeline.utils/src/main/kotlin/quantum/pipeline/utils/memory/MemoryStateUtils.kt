@@ -5,7 +5,8 @@ import quantum.bit.BitFunctionWithParameters
 import quantum.bit.OneBit
 import quantum.bit.ZeroBit
 import quantum.complex.Complex
-import quantum.complex.toComplex
+import quantum.complex.ZeroComplex
+import quantum.pipeline.utils.base.toComplex
 import quantum.pipeline.utils.base.apply
 import quantum.state.*
 import java.lang.RuntimeException
@@ -48,7 +49,7 @@ fun QuantumState.controlledFunction(f: BitFunctionWithParameters): QuantumState 
 
     val input = this.toArrayState().values
     val stateSize = input.size
-    val output = Array(stateSize) { Complex.Zero }
+    val output = Array<Complex>(stateSize) { ZeroComplex }
 
     val bitsSize = f.parameters.size + 1
     val bits = Array<Bit>(bitsSize) { ZeroBit }
