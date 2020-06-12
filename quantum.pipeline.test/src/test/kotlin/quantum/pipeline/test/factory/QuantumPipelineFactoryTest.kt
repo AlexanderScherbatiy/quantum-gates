@@ -6,7 +6,7 @@ import kotlin.test.assertTrue
 
 class QuantumPipelineFactoryTest {
 
-    val basePipelineNames = listOf("base")
+    val expectedPipelineNames = listOf("memory")
 
     @Test
     fun checkRegisteredFactoriesNonEmpty() {
@@ -17,9 +17,9 @@ class QuantumPipelineFactoryTest {
     fun checkBaseRegisteredFactories() {
 
         val pipelineNames = registeredFactories().map { it.name }
-        for (baseName in basePipelineNames) {
-            assertTrue(pipelineNames.contains(baseName),
-                    "Factory $baseName is missed!")
+        for (pipelineName in expectedPipelineNames) {
+            assertTrue(pipelineNames.contains(pipelineName),
+                    "Factory $pipelineName is missed!")
         }
     }
 }

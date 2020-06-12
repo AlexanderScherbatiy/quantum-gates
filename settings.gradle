@@ -11,5 +11,5 @@ rootProject.name = 'quantum-gates'
 
 include 'quantum.pipeline'
 include 'quantum.pipeline.utils'
-include 'quantum.pipeline.base'
+include 'quantum.pipeline.memory'
 include 'quantum.pipeline.test'

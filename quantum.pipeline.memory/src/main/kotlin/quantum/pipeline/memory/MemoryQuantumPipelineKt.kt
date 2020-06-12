@@ -1,4 +1,4 @@
-package quantum.pipeline.base
+package quantum.pipeline.memory
 
 import quantum.bit.BitFunctionWithParameters
 import quantum.bit.VariableBitFunction
@@ -17,14 +17,14 @@ import quantum.state.QuantumState
 import quantum.state.TensorState
 import quantum.state.VariableState
 
-class BaseQuantumPipelineFactory : QuantumPipelineFactory {
-    override val name = "base"
-    override fun getPipeline(state: QuantumState, gates: List<QuantumGate>) = BaseQuantumPipeline(state, gates)
+class MemoryQuantumPipelineFactory : QuantumPipelineFactory {
+    override val name = "memory"
+    override fun getPipeline(state: QuantumState, gates: List<QuantumGate>) = MemoryQuantumPipeline(state, gates)
 }
 
 
-class BaseQuantumPipeline(override val state: QuantumState,
-                          override val gates: List<QuantumGate>) : QuantumPipeline {
+class MemoryQuantumPipeline(override val state: QuantumState,
+                            override val gates: List<QuantumGate>) : QuantumPipeline {
 
     override fun assembly(statesMap: Map<String, QuantumState>,
                           gatesMap: Map<String, QuantumGate>,
@@ -54,25 +54,25 @@ class BaseQuantumPipeline(override val state: QuantumState,
             }
         }
 
-        return BaseAssembledQuantumPipeline(assembledState, assembledGates)
+        return MemoryAssembledQuantumPipeline(assembledState, assembledGates)
     }
 }
 
-class BaseAssembledQuantumPipeline(override val state: QuantumState,
-                                   override val gates: List<QuantumGate>) : AssembledQuantumPipeline {
+class MemoryAssembledQuantumPipeline(override val state: QuantumState,
+                                     override val gates: List<QuantumGate>) : AssembledQuantumPipeline {
 
     override fun evaluate(): EvaluatedQuantumPipeline {
         var output = state
         for (gate in gates) {
-            output = baseMultiply(gate, output)
+            output = multiplyMemoryPipeline(gate, output)
         }
-        return BaseEvaluatedQuantumPipeline(output)
+        return MemoryEvaluatedQuantumPipeline(output)
     }
 }
 
-data class BaseEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
+data class MemoryEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
 
-fun baseMultiply(gate: QuantumGate, state: QuantumState): QuantumState {
+fun multiplyMemoryPipeline(gate: QuantumGate, state: QuantumState): QuantumState {
     val res = multiply(gate, state)
     return if (res == UnknownQuantumState) memoryMultiply(gate, state) else res
 }

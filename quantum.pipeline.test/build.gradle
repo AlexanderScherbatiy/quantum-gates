@@ -1,6 +1,5 @@
 dependencies {
     compile project(':quantum.pipeline')
-    compile project(':quantum.pipeline.base')
+    compile project(':quantum.pipeline.memory')
     compile project(':quantum.pipeline.utils')
 }
-

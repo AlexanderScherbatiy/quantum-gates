@@ -2,4 +2,3 @@ dependencies {
     compile project(':quantum.pipeline')
     compile project(':quantum.pipeline.utils')
 }
-

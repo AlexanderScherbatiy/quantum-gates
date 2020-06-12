@@ -20,5 +20,4 @@ subprojects {
         testCompile 'junit:junit:4.11'
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     }
-
 }
