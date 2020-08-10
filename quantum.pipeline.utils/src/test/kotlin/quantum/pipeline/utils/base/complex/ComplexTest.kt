@@ -40,20 +40,9 @@ class ComplexTest {
         assertEquals(CartesianComplex(0.0, 0.0), ZeroComplex.toCartesian())
         assertEquals(CartesianComplex(1.0, 0.0), OneComplex.toCartesian())
 
-        assertEquals(
-                CartesianComplex(2.0, 3.0),
-                complex(2.0, 3.0).toCartesian()
-        )
-
-        assertEquals(
-                CartesianComplex(1.0, 0.0),
-                PolarComplex(1.0, 0.0).toCartesian()
-        )
-
-        assertEquals(
-                CartesianComplex(1.0, 0.0),
-                polar(1.0, 0.0).toCartesian()
-        )
+        assertEquals(CartesianComplex(2.0, 3.0), complex(2.0, 3.0).toCartesian())
+        assertEquals(CartesianComplex(1.0, 0.0), PolarComplex(1.0, 0.0).toCartesian())
+        assertEquals(CartesianComplex(1.0, 0.0), polar(1.0, 0.0).toCartesian())
 
         val r = 1.2
         val angle = PI / 3.0
@@ -61,15 +50,15 @@ class ComplexTest {
         val x = r * cos(angle)
         val y = r * sin(angle)
 
+        assertEquals(CartesianComplex(x, y), PolarComplex(r, angle).toCartesian())
+        assertEquals(CartesianComplex(x, y), polar(r, angle).toCartesian())
+    }
 
-        assertEquals(
-                CartesianComplex(x, y),
-                PolarComplex(r, angle).toCartesian()
-        )
-
-        assertEquals(
-                CartesianComplex(x, y),
-                polar(r, angle).toCartesian()
-        )
+    @Test
+    fun toCartesianWithZeros() {
+        assertEquals(CartesianComplex(0.0, 0.0), complex(0.0, 0.0).toCartesian())
+        //assertEquals(CartesianComplex(0.0, 0.0), complex(-0.0, 0.0).toCartesian())
+        //assertEquals(CartesianComplex(0.0, 0.0), complex(0.0, -0.0).toCartesian())
+        //assertEquals(CartesianComplex(0.0, 0.0), complex(-0.0, -0.0).toCartesian())
     }
 }
