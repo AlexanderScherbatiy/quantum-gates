@@ -1,96 +1,95 @@
 package quantum.pipeline.test.assembly
 
 import org.junit.Test
-import quantum.bit.*
+import quantum.bit.BitFunctionWithParameters
+import quantum.bit.OneBit
+import quantum.bit.VariableBitFunction
+import quantum.bit.ZeroBit
+import quantum.bit.function
 import quantum.gate.ControlledFunctionGate
-import quantum.pipeline.QuantumPipelineBuilder
+import quantum.gate.HadamardGate
 import quantum.gate.IdentityGate
 import quantum.gate.VariableGate
+import quantum.pipeline.test.utils.assertQuantumStateEquals
 import quantum.pipeline.test.utils.registeredFactories
 import quantum.state.OneQubit
-import quantum.state.TensorState
+import quantum.state.PlusQubit
+import quantum.state.QuantumState
 import quantum.state.ZeroQubit
 import quantum.state.tensor
-import kotlin.test.assertEquals
 
 class AssemblyQuantumPipelineVariableGateTest {
 
     @Test
-    fun testVariableGate() {
+    fun testVariableIdentityGate() {
+
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(ZeroQubit)
-                            .gate(VariableGate(2, "gate"))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(
+                                    ZeroQubit,
+                                    VariableGate(2, "gate"),
+                                    variables = mapOf("gate" to IdentityGate(2)))
+                            .evaluate()
                 }
-                .forEach { pipeline ->
+                .forEach {
+                    assertQuantumStateEquals(ZeroQubit, it.output)
+                }
+    }
 
-                    // state
-                    val state = pipeline.state
-                    assertEquals(ZeroQubit, state)
+    @Test
+    fun testVariableHadamardGate() {
 
-                    // gates
-                    assertEquals(1, pipeline.gates.size)
-                    val gate = pipeline.gates[0]
-                    assertEquals(VariableGate(2, "gate"), gate)
-
-                    // assembled pipeline
-                    val gateValues = mapOf("gate" to IdentityGate(2))
-                    val assembledPipeline = pipeline.assembly(gatesMap = gateValues)
-
-                    // assembled state
-                    val assembledState = assembledPipeline.state
-                    assertEquals(ZeroQubit, assembledState)
-
-                    // assembled gates
-                    assertEquals(1, assembledPipeline.gates.size)
-                    val assembledGate = assembledPipeline.gates[0]
-                    assertEquals(IdentityGate(2), assembledGate)
+        registeredFactories()
+                .map {
+                    it
+                            .getPipeline()
+                            .assembly(
+                                    ZeroQubit,
+                                    VariableGate(2, "gate"),
+                                    variables = mapOf("gate" to HadamardGate)
+                            )
+                            .evaluate()
+                }
+                .forEach {
+                    assertQuantumStateEquals(PlusQubit, it.output)
                 }
     }
 
     @Test
     fun controlledVariableFunctionGate() {
-        registeredFactories()
-                .map {
+        checkControlledVariableFunctionGate(
+                ZeroQubit tensor OneQubit,
+                ZeroQubit tensor OneQubit,
+                function(listOf("x")) { ZeroBit }
+        )
 
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(ZeroQubit tensor OneQubit)
-                            .gate(ControlledFunctionGate(4, VariableBitFunction(1, "f")))
-                            .end()
-                }
-                .forEach { pipeline ->
-
-                    // state
-                    val state = pipeline.state
-                    assertEquals(TensorState(ZeroQubit, OneQubit), state)
-
-                    // gates
-                    assertEquals(1, pipeline.gates.size)
-
-                    val gate = pipeline.gates[0]
-                    assertEquals(
-                            ControlledFunctionGate(4, VariableBitFunction(1, "f")),
-                            gate)
-
-                    // assembled pipeline
-                    val bitValues = mapOf("f" to function(listOf("x")) { OneBit })
-                    val assembledPipeline = pipeline.assembly(bitFunctionsMap = bitValues)
-
-                    // assembled state
-                    val assembledState = assembledPipeline.state
-                    assertEquals(TensorState(ZeroQubit, OneQubit), assembledState)
-
-                    // assembled gates
-                    assertEquals(1, assembledPipeline.gates.size)
-                    val assembledGate = assembledPipeline.gates[0]
-                    assertEquals(
-                            ControlledFunctionGate(4, BitFunctionWithParameters(listOf("x"), OneBit)),
-                            assembledGate)
-                }
+        checkControlledVariableFunctionGate(
+                ZeroQubit tensor OneQubit,
+                ZeroQubit tensor ZeroQubit,
+                function(listOf("x")) { OneBit }
+        )
     }
 
+    private fun checkControlledVariableFunctionGate(
+            state: QuantumState,
+            result: QuantumState,
+            f: BitFunctionWithParameters) {
+
+        registeredFactories()
+                .map {
+                    it
+                            .getPipeline()
+                            .assembly(
+                                    state,
+                                    ControlledFunctionGate(4, VariableBitFunction(1, "f")),
+                                    variables = mapOf("f" to f)
+                            )
+                            .evaluate()
+                }
+                .forEach {
+                    assertQuantumStateEquals(result, it.output)
+                }
+    }
 }

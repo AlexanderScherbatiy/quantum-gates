@@ -1,10 +1,14 @@
 package quantum.pipeline.test.builder
 
 import org.junit.Test
-import quantum.pipeline.QuantumPipelineBuilder
+import quantum.pipeline.test.utils.assertQuantumStateEquals
 import quantum.pipeline.test.utils.registeredFactories
-import quantum.state.*
-import kotlin.test.assertEquals
+import quantum.state.MinusQubit
+import quantum.state.OneQubit
+import quantum.state.PlusQubit
+import quantum.state.QuantumState
+import quantum.state.TensorState
+import quantum.state.ZeroQubit
 
 class QuantumPipelineStateTest {
 
@@ -28,18 +32,37 @@ class QuantumPipelineStateTest {
         testState(MinusQubit)
     }
 
+    @Test
+    fun testStateZeroTensorStateZero() {
+        testState(TensorState(ZeroQubit, ZeroQubit))
+    }
+
+    @Test
+    fun testStateZeroTensorStateOne() {
+        testState(TensorState(ZeroQubit, OneQubit))
+    }
+
+    @Test
+    fun testStateOneTensorStateZero() {
+        testState(TensorState(OneQubit, ZeroQubit))
+    }
+
+    @Test
+    fun testStateOneTensorStateOne() {
+        testState(TensorState(OneQubit, OneQubit))
+    }
+
     private fun testState(state: QuantumState) {
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .factory(it)
-                            .begin()
-                            .state(state)
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(state)
+                            .evaluate()
+
                 }
-                .forEach { pipeline ->
-                    assertEquals(state, pipeline.state)
-                    assertEquals(0, pipeline.gates.size)
+                .forEach {
+                    assertQuantumStateEquals(state, it.output)
                 }
     }
 }

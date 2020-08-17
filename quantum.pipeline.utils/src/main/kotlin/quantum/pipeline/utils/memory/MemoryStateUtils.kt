@@ -8,6 +8,7 @@ import quantum.complex.Complex
 import quantum.complex.ZeroComplex
 import quantum.pipeline.utils.base.toComplex
 import quantum.pipeline.utils.base.apply
+import quantum.pipeline.utils.base.baseToArrayQuantumState
 import quantum.state.*
 import java.lang.RuntimeException
 import kotlin.math.sqrt
@@ -15,39 +16,11 @@ import kotlin.math.sqrt
 val inv_sqrt2 = 1.0 / sqrt(2.0)
 
 fun List<Double>.toQuantumState(): ArrayQuantumState =
-        ArrayQuantumState(this.map { it.toComplex() }.toTypedArray())
-
-fun QuantumState.toArrayState() = when (this) {
-    is ZeroQubit -> listOf(1.0, 0.0).toQuantumState()
-    is OneQubit -> listOf(0.0, 1.0).toQuantumState()
-    is ArrayQuantumState -> this
-    is TensorState -> {
-        when (state1) {
-            is ZeroQubit -> when (state2) {
-                is ZeroQubit -> listOf(1.0, 0.0, 0.0, 0.0).toQuantumState()
-                is OneQubit -> listOf(0.0, 1.0, 0.0, 0.0).toQuantumState()
-                else -> throw RuntimeException("Unknown state: $this")
-            }
-            is OneQubit -> when (state2) {
-                is ZeroQubit -> listOf(0.0, 0.0, 1.0, 0.0).toQuantumState()
-                is OneQubit -> listOf(0.0, 0.0, 0.0, 1.0).toQuantumState()
-                else -> throw RuntimeException("Unknown state: $this")
-            }
-            is PlusQubit -> when (state2) {
-                is ZeroQubit -> listOf(inv_sqrt2, 0.0, inv_sqrt2, 0.0).toQuantumState()
-                is PlusQubit -> listOf(0.5, 0.5, 0.5, 0.5).toQuantumState()
-                is MinusQubit -> listOf(0.5, -0.5, 0.5, -0.5).toQuantumState()
-                else -> throw RuntimeException("Unknown state: $this")
-            }
-            else -> throw RuntimeException("Unknown state: $this")
-        }
-    }
-    else -> throw RuntimeException("Unknown state: $this")
-}
+        ArrayQuantumState(*(this.map { it.toComplex() }.toTypedArray()))
 
 fun QuantumState.controlledFunction(f: BitFunctionWithParameters): QuantumState {
 
-    val input = this.toArrayState().values
+    val input = this.baseToArrayQuantumState().values
     val stateSize = input.size
     val output = Array<Complex>(stateSize) { ZeroComplex }
 
@@ -83,5 +56,5 @@ fun QuantumState.controlledFunction(f: BitFunctionWithParameters): QuantumState 
         }
     }
 
-    return ArrayQuantumState(output)
+    return ArrayQuantumState(*output)
 }

@@ -1,33 +1,34 @@
 package quantum.pipeline
 
-import quantum.bit.BitFunctionWithParameters
-import quantum.state.QuantumState
 import quantum.gate.QuantumGate
+import quantum.state.ArrayQuantumState
+import quantum.state.QuantumState
 
 interface QuantumPipeline {
-    val state: QuantumState
-    val gates: List<QuantumGate>
-    fun assembly(statesMap: Map<String, QuantumState> = mapOf(),
-                 gatesMap: Map<String, QuantumGate> = mapOf(),
-                 bitFunctionsMap: Map<String, BitFunctionWithParameters> = mapOf()
+    fun assembly(
+            state: QuantumState,
+            vararg gates: QuantumGate,
+            variables: Map<String, Any> = mapOf()
     ): AssembledQuantumPipeline
 
-    fun evaluate(): EvaluatedQuantumPipeline = assembly().evaluate()
+    fun evaluate(state: QuantumState,
+                 vararg gates: QuantumGate,
+                 variables: Map<String, Any> = mapOf()
+    ): EvaluatedQuantumPipeline = assembly(state, *gates, variables = variables).evaluate()
 }
 
 interface AssembledQuantumPipeline {
     val state: QuantumState
     val gates: List<QuantumGate>
-    fun evaluate(): EvaluatedQuantumPipeline
+    fun evaluate(variables: Map<String, Any> = mapOf()): EvaluatedQuantumPipeline
 }
 
 interface EvaluatedQuantumPipeline {
     val output: QuantumState
+    val variables: Map<String, Any>
 }
 
 interface QuantumPipelineFactory {
     val name: String
-    fun getPipeline(state: QuantumState,
-                    gates: List<QuantumGate>): QuantumPipeline
+    fun getPipeline(): QuantumPipeline
 }
-

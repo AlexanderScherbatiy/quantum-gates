@@ -35,7 +35,7 @@ object MinusQubit : QuantumState
  */
 data class Qubit(val zero: Complex, val one: Complex) : QuantumState
 
-data class ArrayQuantumState(val values: Array<Complex>) : QuantumState {
+class ArrayQuantumState(vararg val values: Complex) : QuantumState {
 
     override fun equals(other: Any?) = when (other) {
         is ArrayQuantumState -> Arrays.equals(this.values, other.values)

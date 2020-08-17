@@ -1,6 +1,6 @@
 package quantum.pipeline.memory
 
-import quantum.bit.BitFunctionWithParameters
+import quantum.bit.BitFunction
 import quantum.bit.VariableBitFunction
 import quantum.gate.ControlledFunctionGate
 import quantum.gate.QuantumGate
@@ -19,19 +19,38 @@ import quantum.state.VariableState
 
 class MemoryQuantumPipelineFactory : QuantumPipelineFactory {
     override val name = "memory"
-    override fun getPipeline(state: QuantumState, gates: List<QuantumGate>) = MemoryQuantumPipeline(state, gates)
+    override fun getPipeline(): QuantumPipeline = MemoryQuantumPipeline()
 }
 
+class MemoryAssembledQuantumPipeline(override val state: QuantumState,
+                                     override val gates: List<QuantumGate>) : AssembledQuantumPipeline {
 
-class MemoryQuantumPipeline(override val state: QuantumState,
-                            override val gates: List<QuantumGate>) : QuantumPipeline {
+    override fun evaluate(variables: Map<String, Any>): EvaluatedQuantumPipeline {
+        var output = state
+        for (gate in gates) {
+            output = multiplyMemoryPipeline(gate, output)
+        }
+        return MemoryEvaluatedQuantumPipeline(output)
+    }
+}
 
-    override fun assembly(statesMap: Map<String, QuantumState>,
-                          gatesMap: Map<String, QuantumGate>,
-                          bitFunctionsMap: Map<String, BitFunctionWithParameters>): AssembledQuantumPipeline {
+data class MemoryEvaluatedQuantumPipeline(override val output: QuantumState,
+                                          override val variables: Map<String, Any> = mapOf()) : EvaluatedQuantumPipeline
+
+fun multiplyMemoryPipeline(gate: QuantumGate, state: QuantumState): QuantumState {
+    val res = baseMultiply(gate, state)
+    return if (res == UnknownBaseQuantumState) memoryMultiply(gate, state) else res
+}
+
+class MemoryQuantumPipeline() : QuantumPipeline {
+
+    override fun assembly(state: QuantumState,
+                          vararg gates: QuantumGate,
+                          variables: Map<String, Any>
+    ): AssembledQuantumPipeline {
 
         fun assembleState(s: QuantumState): QuantumState = when (s) {
-            is VariableState -> variableValue("State", s.name, statesMap)
+            is VariableState -> variableValue("State", s.name, variables) as QuantumState
             is TensorState -> TensorState(assembleState(s.state1), assembleState(s.state2))
             else -> s
         }
@@ -40,13 +59,13 @@ class MemoryQuantumPipeline(override val state: QuantumState,
 
         val assembledGates = gates.map { gate ->
             when (gate) {
-                is VariableGate -> variableValue("Gate", gate.name, gatesMap)
+                is VariableGate -> variableValue("Gate", gate.name, variables) as QuantumGate
                 is ControlledFunctionGate -> {
                     val f = gate.f
                     when (f) {
                         is VariableBitFunction -> ControlledFunctionGate(
                                 gate.size,
-                                variableValue("BitFunction", f.name, bitFunctionsMap))
+                                variableValue("BitFunction", f.name, variables) as BitFunction)
                         else -> gate
                     }
                 }
@@ -56,23 +75,4 @@ class MemoryQuantumPipeline(override val state: QuantumState,
 
         return MemoryAssembledQuantumPipeline(assembledState, assembledGates)
     }
-}
-
-class MemoryAssembledQuantumPipeline(override val state: QuantumState,
-                                     override val gates: List<QuantumGate>) : AssembledQuantumPipeline {
-
-    override fun evaluate(): EvaluatedQuantumPipeline {
-        var output = state
-        for (gate in gates) {
-            output = multiplyMemoryPipeline(gate, output)
-        }
-        return MemoryEvaluatedQuantumPipeline(output)
-    }
-}
-
-data class MemoryEvaluatedQuantumPipeline(override val output: QuantumState) : EvaluatedQuantumPipeline
-
-fun multiplyMemoryPipeline(gate: QuantumGate, state: QuantumState): QuantumState {
-    val res = baseMultiply(gate, state)
-    return if (res == UnknownBaseQuantumState) memoryMultiply(gate, state) else res
 }

@@ -1,18 +1,16 @@
 package quantum.pipeline.test.builder
 
 import org.junit.Test
-import quantum.bit.BitFunctionWithParameters
 import quantum.bit.ZeroBit
 import quantum.bit.function
 import quantum.gate.ControlledFunctionGate
-import quantum.pipeline.QuantumPipelineBuilder
 import quantum.gate.IdentityGate
+import quantum.pipeline.test.utils.assertQuantumStateEquals
 import quantum.pipeline.test.utils.registeredFactories
 import quantum.state.OneQubit
 import quantum.state.TensorState
 import quantum.state.ZeroQubit
 import quantum.state.tensor
-import kotlin.test.assertEquals
 
 class QuantumPipelineGateTest {
 
@@ -20,20 +18,13 @@ class QuantumPipelineGateTest {
     fun testIdentityGate() {
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .factory(it)
-                            .begin()
-                            .state(ZeroQubit)
-                            .gate(IdentityGate(2))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(ZeroQubit, IdentityGate(2))
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-
-                    assertEquals(ZeroQubit, pipeline.state)
-                    assertEquals(1, pipeline.gates.size)
-
-                    val gate = pipeline.gates[0]
-                    assertEquals(IdentityGate(2), gate)
+                .forEach {
+                    assertQuantumStateEquals(ZeroQubit, it.output)
                 }
     }
 
@@ -41,22 +32,15 @@ class QuantumPipelineGateTest {
     fun controlledFunctionGate() {
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .factory(it)
-                            .begin()
-                            .state(ZeroQubit tensor OneQubit)
-                            .gate(ControlledFunctionGate(4, function(listOf("x")) { ZeroBit }))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(
+                                    ZeroQubit tensor OneQubit,
+                                    ControlledFunctionGate(4, function(listOf("x")) { ZeroBit }))
+                            .evaluate()
                 }
-                .forEach{ pipeline ->
-
-                    assertEquals(TensorState(ZeroQubit, OneQubit), pipeline.state)
-                    assertEquals(1, pipeline.gates.size)
-
-                    val gate = pipeline.gates[0]
-                    assertEquals(
-                            ControlledFunctionGate(4, BitFunctionWithParameters(listOf("x"), ZeroBit)),
-                            gate)
+                .forEach {
+                    assertQuantumStateEquals(TensorState(ZeroQubit, OneQubit), it.output)
                 }
     }
 }

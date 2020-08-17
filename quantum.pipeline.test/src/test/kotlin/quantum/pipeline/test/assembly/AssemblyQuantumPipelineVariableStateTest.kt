@@ -1,43 +1,28 @@
 package quantum.pipeline.test.assembly
 
 import org.junit.Test
-import quantum.pipeline.QuantumPipelineBuilder
+import quantum.pipeline.test.utils.assertQuantumStateEquals
 import quantum.pipeline.test.utils.registeredFactories
-import quantum.state.ZeroQubit
 import quantum.state.VariableState
-import kotlin.test.assertEquals
+import quantum.state.ZeroQubit
 
 class AssemblyQuantumPipelineVariableStateTest {
 
     @Test
     fun testVariableState() {
+
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(VariableState(2, "input"))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(
+                                    VariableState(2, "input"),
+                                    variables = mapOf("input" to ZeroQubit)
+                            )
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-
-                    // state
-                    val state = pipeline.state
-                    assertEquals(VariableState(2, "input"), state)
-
-                    // gates
-                    assertEquals(0, pipeline.gates.size)
-
-                    // assembled quantum.pipeline
-                    val stateValues = mapOf("input" to ZeroQubit)
-                    val assembledPipeline = pipeline.assembly(statesMap = stateValues)
-
-                    // assembled state
-                    val assembledState = assembledPipeline.state
-                    assertEquals(ZeroQubit, assembledState)
-
-                    // assembled gates
-                    assertEquals(0, assembledPipeline.gates.size)
+                .forEach {
+                    assertQuantumStateEquals(ZeroQubit, it.output)
                 }
-
     }
 }

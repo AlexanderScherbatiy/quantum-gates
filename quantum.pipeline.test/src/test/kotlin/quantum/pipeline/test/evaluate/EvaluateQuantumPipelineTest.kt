@@ -1,30 +1,26 @@
 package quantum.pipeline.test.evaluate
 
 import org.junit.Test
-import quantum.pipeline.QuantumPipelineBuilder
 import quantum.gate.IdentityGate
+import quantum.pipeline.test.utils.assertQuantumStateEquals
 import quantum.pipeline.test.utils.registeredFactories
 import quantum.state.OneQubit
 import quantum.state.ZeroQubit
-import kotlin.test.assertEquals
 
 class EvaluateQuantumPipelineTest {
 
     @Test
     fun testZeroQubit() {
+
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(ZeroQubit)
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(ZeroQubit)
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-
-                    val assembledPipeline = pipeline.assembly()
-                    val evaluatedPipeline = assembledPipeline.evaluate()
-                    val output = evaluatedPipeline.output
-                    assertEquals(ZeroQubit, output)
+                .forEach {
+                    assertQuantumStateEquals(ZeroQubit, it.output)
                 }
     }
 
@@ -32,35 +28,28 @@ class EvaluateQuantumPipelineTest {
     fun testOneQubit() {
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(OneQubit)
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(OneQubit)
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-                    val assembledPipeline = pipeline.assembly()
-                    val evaluatedPipeline = assembledPipeline.evaluate()
-                    val output = evaluatedPipeline.output
-                    assertEquals(OneQubit, output)
+                .forEach {
+                    assertQuantumStateEquals(OneQubit, it.output)
                 }
     }
 
     @Test
     fun testQubitZeroIdentityGate() {
+
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(ZeroQubit)
-                            .gate(IdentityGate(2))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(ZeroQubit, IdentityGate(2))
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-
-                    val assembledPipeline = pipeline.assembly()
-                    val evaluatedPipeline = assembledPipeline.evaluate()
-                    val output = evaluatedPipeline.output
-                    assertEquals(ZeroQubit, output)
+                .forEach {
+                    assertQuantumStateEquals(ZeroQubit, it.output)
                 }
     }
 
@@ -68,18 +57,13 @@ class EvaluateQuantumPipelineTest {
     fun testQubitOneIdentityGate() {
         registeredFactories()
                 .map {
-                    QuantumPipelineBuilder()
-                            .begin()
-                            .state(OneQubit)
-                            .gate(IdentityGate(2))
-                            .end()
+                    it
+                            .getPipeline()
+                            .assembly(OneQubit, IdentityGate(2))
+                            .evaluate()
                 }
-                .forEach { pipeline ->
-
-                    val assembledPipeline = pipeline.assembly()
-                    val evaluatedPipeline = assembledPipeline.evaluate()
-                    val output = evaluatedPipeline.output
-                    assertEquals(OneQubit, output)
+                .forEach {
+                    assertQuantumStateEquals(OneQubit, it.output)
                 }
     }
 }
