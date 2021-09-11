@@ -5,6 +5,18 @@ import quantum.gate.*
 import quantum.pipeline.utils.memory.controlledFunction
 import quantum.state.*
 
+fun baseDimension(state: QuantumState, index: Int): Int = when (state) {
+    is ZeroQubit, is OneQubit, is PlusQubit, is MinusQubit, is Qubit -> when (index) {
+        0 -> 2
+        else -> throw IndexOutOfBoundsException("Index $index is out of range for $state")
+    }
+    is ArrayQuantumState -> when (index) {
+        0 -> state.values.size
+        else -> throw IndexOutOfBoundsException("Index $index is out of range for $state")
+    }
+    else -> -1
+}
+
 /**
  * Multiplies base quantum gates and states.
  * Returns UnknownBaseQuantumState in case the result is not processed.

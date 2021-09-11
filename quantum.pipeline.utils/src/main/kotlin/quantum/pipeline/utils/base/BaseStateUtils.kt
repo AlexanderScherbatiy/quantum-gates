@@ -1,12 +1,9 @@
 package quantum.pipeline.utils.base
 
-import quantum.complex.OneComplex
-import quantum.complex.ZeroComplex
 import quantum.pipeline.utils.memory.inv_sqrt2
 import quantum.pipeline.utils.memory.toQuantumState
 import quantum.state.*
 import java.lang.RuntimeException
-import kotlin.math.sqrt
 
 object UnknownBaseQuantumState : QuantumState
 
