@@ -10,35 +10,37 @@ import quantum.state.*
  * Returns UnknownBaseQuantumState in case the result is not processed.
  */
 fun baseMultiply(gate: QuantumGate, state: QuantumState): QuantumState =
-        when (gate) {
-            is IdentityGate -> state
-            is HadamardGate -> when (state) {
-                is ZeroQubit -> PlusQubit
-                is OneQubit -> MinusQubit
-                is PlusQubit -> ZeroQubit
-                is MinusQubit -> OneQubit
-                else -> UnknownBaseQuantumState
-            }
-            is ControlledNotGate -> baseControlledNot(state)
-            is ControlledFunctionGate -> {
-                val f = gate.f
-                when (f) {
-                    is BitFunctionWithParameters -> state.controlledFunction(f)
-                    else -> UnknownBaseQuantumState
-                }
-            }
-            is TensorGate -> {
-                when (state) {
-                    is TensorState -> {
-                        val out1 = baseMultiply(gate.gate1, state.state1)
-                        val out2 = baseMultiply(gate.gate2, state.state2)
-                        TensorState(out1, out2)
-                    }
-                    else -> UnknownBaseQuantumState
-                }
-            }
+    when (gate) {
+        is IdentityGate -> state
+        is HadamardGate -> when (state) {
+            is ZeroQubit -> PlusQubit
+            is OneQubit -> MinusQubit
+            is PlusQubit -> ZeroQubit
+            is MinusQubit -> OneQubit
             else -> UnknownBaseQuantumState
         }
+        is ControlledNotGate -> baseControlledNot(state)
+        is ControlledFunctionGate -> {
+            val f = gate.f
+            when (f) {
+                is BitFunctionWithParameters -> state.controlledFunction(f)
+                else -> UnknownBaseQuantumState
+            }
+        }
+        is TensorGate -> {
+            when (state) {
+                is TensorState -> {
+                    val out1 = baseMultiply(gate.gate1, state.state1)
+                    val out2 = baseMultiply(gate.gate2, state.state2)
+                    TensorState(out1, out2)
+                }
+                else -> UnknownBaseQuantumState
+            }
+        }
+
+        is QuantumMeasureState -> baseMeasureState(state, gate.index)
+        else -> UnknownBaseQuantumState
+    }
 
 fun baseSwap(state: QuantumState): QuantumState = when (state) {
     is ZeroQubit -> OneQubit
@@ -60,4 +62,19 @@ fun baseControlledNot(state: QuantumState): QuantumState = when (state) {
         }
     }
     else -> UnknownBaseQuantumState
+}
+
+fun baseMeasureState(state: QuantumState, index: Int): QuantumState {
+
+    val splits = baseSplitState(state, index)
+
+    return UnknownBaseQuantumState
+}
+
+fun baseSplitState(state: QuantumState, index: Int): Map<Int, QuantumState> = when (state) {
+    is ZeroQubit -> when (index) {
+        0 -> mapOf(0 to ZeroQubit)
+        else -> throw IndexOutOfBoundsException("Index: $index")
+    }
+    else -> throw Exception("Unable to split state: $state by index: $index")
 }

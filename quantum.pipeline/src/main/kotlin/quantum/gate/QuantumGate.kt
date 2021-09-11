@@ -1,5 +1,6 @@
 package quantum.gate
 
+import quantum.bit.Bit
 import quantum.bit.BitFunction
 
 interface QuantumGate
@@ -26,5 +27,9 @@ data class ControlledFunctionGate(val size: Int, val f: BitFunction) : QuantumGa
 data class VariableGate(val size: Int, val name: String) : QuantumGate
 
 data class TensorGate(val gate1: QuantumGate, val gate2: QuantumGate) : QuantumGate
+
+interface QuantumMeasure : QuantumGate
+
+data class QuantumMeasureState(val index: Int, val resultBits: String) : QuantumMeasure
 
 infix fun QuantumGate.tensor(gate: QuantumGate): QuantumGate = TensorGate(this, gate)
