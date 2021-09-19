@@ -2,6 +2,8 @@ package quantum.gate
 
 import quantum.bit.Bit
 import quantum.bit.BitFunction
+import quantum.state.IndexedCoefficient
+import quantum.state.QuantumState
 
 interface QuantumGate
 
@@ -27,6 +29,11 @@ data class ControlledFunctionGate(val size: Int, val f: BitFunction) : QuantumGa
 data class VariableGate(val size: Int, val name: String) : QuantumGate
 
 data class TensorGate(val gate1: QuantumGate, val gate2: QuantumGate) : QuantumGate
+
+class IndexedTensorQuantumGate(
+    val dimensions: Array<Int>,
+    vararg val coefficients: IndexedCoefficient
+) : QuantumGate
 
 interface QuantumMeasure : QuantumGate
 
