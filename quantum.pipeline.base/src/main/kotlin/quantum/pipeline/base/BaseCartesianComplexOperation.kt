@@ -1,0 +1,26 @@
+package quantum.pipeline.base
+
+import quantum.complex.*
+import kotlin.math.cos
+import kotlin.math.sin
+
+class BaseCartesianComplexOperation : ComplexOperation<CartesianComplex> {
+
+    override fun isSupported(complex: Complex) =
+        complex == ZeroComplex
+                || complex == OneComplex
+                || complex is CartesianComplex
+                || complex is PolarComplex
+
+    override fun convert(complex: Complex): CartesianComplex = when (complex) {
+        ZeroComplex -> complex(0.0, 0.0)
+        OneComplex -> complex(1.0, 0.0)
+        is CartesianComplex -> complex
+        is PolarComplex -> complex(complex.radius * cos(complex.angle), complex.radius * sin(complex.angle))
+        else -> throw Exception("Unable to convert complex $complex")
+    }
+
+    override fun add(complex1: CartesianComplex, complex2: CartesianComplex): CartesianComplex {
+        TODO("Not yet implemented")
+    }
+}
