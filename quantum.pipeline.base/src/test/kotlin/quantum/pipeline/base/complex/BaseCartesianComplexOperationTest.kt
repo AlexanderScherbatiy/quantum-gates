@@ -44,6 +44,19 @@ class BaseCartesianComplexOperationTest {
         )
     }
 
+    @Test
+    fun sumTest() {
+
+        val op: ComplexOperation<CartesianComplex> = BaseCartesianComplexOperation()
+
+        assertComplexEquals(
+            complex(4.4, 6.6), op.sum(
+                CartesianComplex(1.1, 2.2),
+                CartesianComplex(3.3, 4.4)
+            )
+        )
+    }
+
 
     fun assertComplexEquals(c1: CartesianComplex, c2: CartesianComplex) {
         Assert.assertEquals(c1.real, c2.real, DELTA)

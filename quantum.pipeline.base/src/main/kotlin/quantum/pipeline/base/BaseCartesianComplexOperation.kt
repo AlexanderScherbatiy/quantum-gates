@@ -20,7 +20,6 @@ class BaseCartesianComplexOperation : ComplexOperation<CartesianComplex> {
         else -> throw Exception("Unable to convert complex $complex")
     }
 
-    override fun add(complex1: CartesianComplex, complex2: CartesianComplex): CartesianComplex {
-        TODO("Not yet implemented")
-    }
+    override fun sum(complex1: CartesianComplex, complex2: CartesianComplex): CartesianComplex =
+        CartesianComplex(complex1.real + complex2.real, complex1.imaginary + complex2.imaginary)
 }

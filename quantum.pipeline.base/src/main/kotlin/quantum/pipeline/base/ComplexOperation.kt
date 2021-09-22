@@ -8,5 +8,5 @@ interface ComplexOperation<C : Complex> {
 
     fun convert(complex: Complex): C
 
-    fun add(complex1: C, complex2: C): C
+    fun sum(complex1: C, complex2: C): C
 }
