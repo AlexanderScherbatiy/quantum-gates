@@ -7,7 +7,7 @@ import quantum.gate.QuantumGate
 import quantum.state.*
 import java.lang.Exception
 
-class IndexedQuantumOperation : QuantumOperation<IndexedTensorQuantumState, IndexedTensorQuantumGate> {
+class IndexedTensorQuantumOperation : QuantumOperation<IndexedTensorQuantumState, IndexedTensorQuantumGate> {
 
     override fun convert(state: QuantumState): IndexedTensorQuantumState = when (state) {
         is ZeroQubit -> IndexedTensorQuantumState(arrayOf(2), IndexedCoefficient(OneComplex, 0))

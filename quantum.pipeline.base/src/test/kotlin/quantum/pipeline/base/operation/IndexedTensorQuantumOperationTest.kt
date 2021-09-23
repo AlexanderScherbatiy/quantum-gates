@@ -3,18 +3,18 @@ package quantum.pipeline.base.operation
 import org.junit.Test
 import quantum.complex.OneComplex
 import quantum.complex.ZeroComplex
-import quantum.pipeline.base.IndexedQuantumOperation
+import quantum.pipeline.base.IndexedTensorQuantumOperation
 import quantum.state.ArrayQuantumState
 import quantum.state.OneQubit
 import quantum.state.ZeroQubit
 import kotlin.test.assertEquals
 
-class IndexedQuantumOperationTest {
+class IndexedTensorQuantumOperationTest {
 
     @Test
     fun convertQubitToState() {
 
-        val operation = IndexedQuantumOperation()
+        val operation = IndexedTensorQuantumOperation()
 
         val zeroQubit = operation.convert(ZeroQubit)
         assertEquals(1, zeroQubit.dimensions.size)
@@ -36,7 +36,7 @@ class IndexedQuantumOperationTest {
     @Test
     fun convertArrayStateToState() {
 
-        val operation = IndexedQuantumOperation()
+        val operation = IndexedTensorQuantumOperation()
 
         val state1 = operation.convert(ArrayQuantumState(OneComplex))
         assertEquals(1, state1.dimensions.size)
