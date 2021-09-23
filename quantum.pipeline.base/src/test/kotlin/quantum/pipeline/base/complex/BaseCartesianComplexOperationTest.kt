@@ -3,6 +3,7 @@ package quantum.pipeline.base.complex
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 import org.junit.Test
 import org.junit.Assert
 
@@ -57,6 +58,23 @@ class BaseCartesianComplexOperationTest {
         )
     }
 
+    @Test
+    fun testIsZero() {
+
+        val op: ComplexOperation<CartesianComplex> = BaseCartesianComplexOperation()
+
+        assertTrue { op.isZero(CartesianComplex(0.0, 0.0), 0.001) }
+
+        assertTrue { op.isZero(CartesianComplex(0.01, 0.01), 0.1) }
+        assertTrue { op.isZero(CartesianComplex(-0.01, 0.01), 0.1) }
+        assertTrue { op.isZero(CartesianComplex(0.02, -0.03), 0.1) }
+        assertTrue { op.isZero(CartesianComplex(-0.04, -0.04), 0.1) }
+
+        assertFalse { op.isZero(CartesianComplex(0.01, 0.01), 0.001) }
+        assertFalse { op.isZero(CartesianComplex(-0.04, 0.05), 0.001) }
+        assertFalse { op.isZero(CartesianComplex(0.06, -0.07), 0.001) }
+        assertFalse { op.isZero(CartesianComplex(-0.08, -0.09), 0.001) }
+    }
 
     fun assertComplexEquals(c1: CartesianComplex, c2: CartesianComplex) {
         Assert.assertEquals(c1.real, c2.real, DELTA)
