@@ -90,3 +90,38 @@ fun baseSplitState(state: QuantumState, index: Int): Map<Int, QuantumState> = wh
     }
     else -> throw Exception("Unable to split state: $state by index: $index")
 }
+
+fun baseDimensionsToRange(vararg dimensions: Int): List<IntArray> {
+
+    val range = mutableListOf<IntArray>()
+
+    if (dimensions.contains(0)) {
+        return range
+    }
+
+    val values = IntArray(dimensions.size)
+
+    var index = 0
+
+    loop@
+    while (true) {
+
+        range.add(values.clone())
+
+        while (true) {
+            values[index]++;
+            if (values[index] < dimensions[index]) {
+                index = 0
+                break
+            }
+            values[index] = 0
+            index++
+
+            if (index == dimensions.size) {
+                break@loop
+            }
+        }
+    }
+
+    return range
+}
