@@ -1,4 +1,4 @@
-package quantum.pipeline.utils.base
+package quantum.pipeline.base
 
 import quantum.gate.QuantumGate
 import quantum.state.QuantumState

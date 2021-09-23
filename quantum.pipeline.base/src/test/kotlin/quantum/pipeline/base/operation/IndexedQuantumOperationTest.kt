@@ -1,9 +1,9 @@
-package quantum.pipeline.utils.base.operation
+package quantum.pipeline.base.operation
 
 import org.junit.Test
 import quantum.complex.OneComplex
 import quantum.complex.ZeroComplex
-import quantum.pipeline.utils.base.IndexedQuantumOperation
+import quantum.pipeline.base.IndexedQuantumOperation
 import quantum.state.ArrayQuantumState
 import quantum.state.OneQubit
 import quantum.state.ZeroQubit
