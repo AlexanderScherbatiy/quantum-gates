@@ -16,32 +16,22 @@ class BaseCartesianComplexOperationTest {
     val DELTA = 0.001
 
     @Test
-    fun isSupportedTest() {
-
-        val op: ComplexOperation<CartesianComplex> = BaseCartesianComplexOperation()
-        assertTrue { op.isSupported(ZeroComplex) }
-        assertTrue { op.isSupported(OneComplex) }
-        assertTrue { op.isSupported(complex(2.3, 4.5)) }
-        assertTrue { op.isSupported(polar(2.3, 4.5)) }
-    }
-
-    @Test
     fun convertTest() {
 
         val op: ComplexOperation<CartesianComplex> = BaseCartesianComplexOperation()
 
-        assertComplexEquals(complex(0.0, 0.0), op.convert(ZeroComplex))
-        assertComplexEquals(complex(1.0, 0.0), op.convert(OneComplex))
+        assertComplexEquals(complex(0.0, 0.0), op.convert(ZeroComplex)!!)
+        assertComplexEquals(complex(1.0, 0.0), op.convert(OneComplex)!!)
 
-        assertComplexEquals(complex(0.1, 0.2), op.convert(complex(0.1, 0.2)))
-        assertComplexEquals(complex(4.1, 5.2), op.convert(complex(4.1, 5.2)))
+        assertComplexEquals(complex(0.1, 0.2), op.convert(complex(0.1, 0.2))!!)
+        assertComplexEquals(complex(4.1, 5.2), op.convert(complex(4.1, 5.2))!!)
 
         val r = 3.4
         var angle = 0.15
 
         assertComplexEquals(
             complex(r * cos(angle), r * sin(angle)),
-            op.convert(polar(r, angle))
+            op.convert(polar(r, angle))!!
         )
     }
 

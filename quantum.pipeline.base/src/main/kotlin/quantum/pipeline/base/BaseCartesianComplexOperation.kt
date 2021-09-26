@@ -7,18 +7,12 @@ import kotlin.math.sin
 
 class BaseCartesianComplexOperation : ComplexOperation<CartesianComplex> {
 
-    override fun isSupported(complex: Complex) =
-        complex == ZeroComplex
-                || complex == OneComplex
-                || complex is CartesianComplex
-                || complex is PolarComplex
-
-    override fun convert(complex: Complex): CartesianComplex = when (complex) {
+    override fun convert(complex: Complex): CartesianComplex? = when (complex) {
         ZeroComplex -> complex(0.0, 0.0)
         OneComplex -> complex(1.0, 0.0)
         is CartesianComplex -> complex
         is PolarComplex -> complex(complex.radius * cos(complex.angle), complex.radius * sin(complex.angle))
-        else -> throw Exception("Unable to convert complex $complex")
+        else -> null
     }
 
     override fun isZero(complex: CartesianComplex, delta: Double): Boolean =
