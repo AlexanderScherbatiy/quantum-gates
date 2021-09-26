@@ -51,11 +51,11 @@ class ArrayQuantumState(vararg val values: Complex) : QuantumState {
     }
 }
 
-class IndexedCoefficient(val value: Complex, vararg val indicies: Int)
+class IndexedStateValue(val value: Complex, vararg val indices: Int)
 
 class IndexedTensorQuantumState(
     val dimensions: Array<Int>,
-    vararg val coefficients: IndexedCoefficient
+    vararg val coefficients: IndexedStateValue
 ) : QuantumState
 
 data class VariableState(val size: Int, val name: String) : QuantumState
