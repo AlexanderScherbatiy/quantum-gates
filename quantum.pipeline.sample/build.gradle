@@ -1,0 +1,12 @@
+
+plugins {
+    id 'application'
+}
+
+mainClassName = 'quantum.pipeline.sample.QuantumPipelineSampeKt'
+
+dependencies {
+    compile project(':quantum.pipeline')
+    compile project(':quantum.pipeline.base')
+    compile project(':quantum.pipeline.memory')
+}
