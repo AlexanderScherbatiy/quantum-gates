@@ -11,7 +11,7 @@ constant functions are:
 ```
 and balanced functions are:
 ```kotlin
-    val f2 = function(listOf("x")) { VariableBit("x") }
+val f2 = function(listOf("x")) { VariableBit("x") }
 val f3 = function(listOf("x")) { VariableBit("x").not() }
 ```
 looks like:
